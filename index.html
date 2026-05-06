@@ -24,6 +24,7 @@ body{font-family:var(--sans);color:var(--texto);background:var(--fundo);line-hei
 /* AUTH GATE */
 .auth-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0f2133 0%,#1a6fa0 100%);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
 .auth-box{background:#fff;border-radius:14px;padding:36px 32px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center}
+.auth-box .sbb-logo{margin:0 auto 18px}
 .auth-box h2{font-size:1.3rem;color:var(--marinho);margin-bottom:6px}
 .auth-box p{font-size:.85rem;color:var(--texto-claro);margin-bottom:22px}
 .auth-input{width:100%;padding:12px 16px;border:1px solid var(--borda);border-radius:8px;font-size:1rem;outline:none;font-family:var(--sans);margin-bottom:12px}
@@ -40,6 +41,12 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .header-brand{display:flex;align-items:center;gap:14px}
 .header h1{font-size:1.3rem;font-weight:700;white-space:nowrap}
 .header h1 span{color:var(--azul-claro);font-weight:400;font-size:.85em}
+.sbb-logo{width:92px;height:44px;border-radius:6px;background:#fff;color:var(--marinho);display:inline-flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.18);flex:0 0 auto}
+.sbb-logo::before{content:"";position:absolute;left:0;right:0;bottom:0;height:7px;background:linear-gradient(90deg,#16a34a 0 33%,#f6c343 33% 66%,#2e99d2 66% 100%)}
+.sbb-logo-text{font-weight:800;font-size:1.55rem;letter-spacing:0;line-height:1;margin-bottom:4px}
+.sbb-logo.auth-logo{width:112px;height:54px;box-shadow:0 6px 18px rgba(15,33,51,.14)}
+.sbb-logo.auth-logo .sbb-logo-text{font-size:1.9rem}
+@media(max-width:700px){.header-inner{align-items:flex-start}.header h1{font-size:1.05rem;white-space:normal}.sbb-logo{width:78px;height:38px}.sbb-logo-text{font-size:1.3rem}}
 
 .totales{background:#142a40;border-top:1px solid rgba(255,255,255,.08);padding:10px 24px}
 .totales-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -185,6 +192,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <!-- AUTH GATE -->
 <div class="auth-overlay" id="auth-overlay">
   <div class="auth-box">
+    <div class="sbb-logo auth-logo" aria-label="SBB"><span class="sbb-logo-text">SBB</span></div>
     <h2>Inventario SBB</h2>
     <p>Pedido de Exportación · Acceso restringido</p>
     <form id="auth-form">
@@ -198,11 +206,12 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <header class="header">
   <div class="header-inner">
     <div class="header-brand">
+      <div class="sbb-logo" aria-label="SBB"><span class="sbb-logo-text">SBB</span></div>
       <h1>Inventario SBB <span>— Pedido de Exportación</span></h1>
     </div>
     <div style="font-size:.78rem;opacity:.75;text-align:right">
       <div>243 SKUs · <b style="color:var(--azul-claro)">69</b> lanz · 163 reg · <span style="color:#fca5a5">11 disc</span></div>
-      <div style="font-size:.7rem;opacity:.7">Generado: 06/05/2026 15:52</div>
+      <div style="font-size:.7rem;opacity:.7">Generado: 06/05/2026 15:56</div>
     </div>
   </div>
   <div class="totales">
@@ -277,7 +286,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <button class="btt" id="btt" onclick="window.scrollTo({top:0})" title="Volver arriba">↑</button>
 
 <footer class="footer">
-  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 06/05/2026 15:52<br>
+  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 06/05/2026 15:56<br>
   <small>Tabla informativa. Precios EXW en USD, sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
