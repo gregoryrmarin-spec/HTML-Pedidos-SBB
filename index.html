@@ -41,16 +41,20 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .header-brand{display:flex;align-items:center;gap:14px}
 .header h1{font-size:1.3rem;font-weight:700;white-space:nowrap}
 .header h1 span{color:var(--azul-claro);font-weight:400;font-size:.85em}
-.sbb-logo{width:92px;height:44px;border-radius:6px;background:#fff;color:var(--marinho);display:inline-flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.18);flex:0 0 auto}
-.sbb-logo::before{content:"";position:absolute;left:0;right:0;bottom:0;height:7px;background:linear-gradient(90deg,#16a34a 0 33%,#f6c343 33% 66%,#2e99d2 66% 100%)}
-.sbb-logo-text{font-weight:800;font-size:1.55rem;letter-spacing:0;line-height:1;margin-bottom:4px}
-.sbb-logo.auth-logo{width:112px;height:54px;box-shadow:0 6px 18px rgba(15,33,51,.14)}
-.sbb-logo.auth-logo .sbb-logo-text{font-size:1.9rem}
-@media(max-width:700px){.header-inner{align-items:flex-start}.header h1{font-size:1.05rem;white-space:normal}.sbb-logo{width:78px;height:38px}.sbb-logo-text{font-size:1.3rem}}
+.sbb-logo{width:122px;height:42px;object-fit:contain;background:#fff;border-radius:4px;padding:5px 8px;box-shadow:0 2px 8px rgba(0,0,0,.18);flex:0 0 auto}
+.sbb-logo.auth-logo{width:150px;height:52px;box-shadow:0 6px 18px rgba(15,33,51,.14)}
+@media(max-width:700px){.header-inner{align-items:flex-start}.header h1{font-size:1.05rem;white-space:normal}.sbb-logo{width:104px;height:36px}}
 
 .totales{background:#142a40;border-top:1px solid rgba(255,255,255,.08);padding:10px 24px}
 .totales-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .tot-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px}
+.tot-card.container-card{display:grid;grid-template-columns:1fr 86px;align-items:center;gap:10px;min-height:92px}
+.container-visual{height:54px;position:relative;border:2px solid rgba(255,255,255,.56);border-radius:6px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.04));overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.container-visual::before{content:"";position:absolute;inset:6px;border:1px solid rgba(255,255,255,.18);background:repeating-linear-gradient(90deg,rgba(255,255,255,.1) 0 1px,transparent 1px 12px);z-index:2;pointer-events:none}
+.container-visual::after{content:"";position:absolute;right:-8px;top:13px;width:8px;height:26px;border:2px solid rgba(255,255,255,.56);border-left:0;border-radius:0 4px 4px 0}
+.container-fill{position:absolute;left:0;bottom:0;width:0%;height:100%;background:linear-gradient(90deg,#2e99d2,#72c7f0);transition:width .25s,background .25s}
+.container-fill.warn{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.container-fill.over{background:linear-gradient(90deg,#dc2626,#f87171)}
 .tot-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5);font-weight:600}
 .tot-value{font-size:1.15rem;font-weight:700;color:#fff;margin-top:2px;font-variant-numeric:tabular-nums}
 .tot-sub{font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px;font-variant-numeric:tabular-nums}
@@ -192,7 +196,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <!-- AUTH GATE -->
 <div class="auth-overlay" id="auth-overlay">
   <div class="auth-box">
-    <div class="sbb-logo auth-logo" aria-label="SBB"><span class="sbb-logo-text">SBB</span></div>
+    <img class="sbb-logo auth-logo" src="assets/sbb-logo.png" alt="Sociedade Bíblica do Brasil">
     <h2>Inventario SBB</h2>
     <p>Pedido de Exportación · Acceso restringido</p>
     <form id="auth-form">
@@ -206,27 +210,33 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <header class="header">
   <div class="header-inner">
     <div class="header-brand">
-      <div class="sbb-logo" aria-label="SBB"><span class="sbb-logo-text">SBB</span></div>
+      <img class="sbb-logo" src="assets/sbb-logo.png" alt="Sociedade Bíblica do Brasil">
       <h1>Inventario SBB <span>— Pedido de Exportación</span></h1>
     </div>
     <div style="font-size:.78rem;opacity:.75;text-align:right">
       <div>243 SKUs · <b style="color:var(--azul-claro)">69</b> lanz · 163 reg · <span style="color:#fca5a5">11 disc</span></div>
-      <div style="font-size:.7rem;opacity:.7">Generado: 06/05/2026 15:56</div>
+      <div style="font-size:.7rem;opacity:.7">Generado: 06/05/2026 16:01</div>
     </div>
   </div>
   <div class="totales">
     <div class="totales-inner">
-      <div class="tot-card">
-        <div class="tot-label">Contenedor 20' (28m³)</div>
-        <div class="tot-value" id="tot-20-pct">0%</div>
-        <div class="tot-sub" id="tot-20-sub">0 m³ / 28 m³</div>
-        <div class="bar"><div class="bar-fill" id="bar-20" style="width:0%"></div></div>
+      <div class="tot-card container-card">
+        <div>
+          <div class="tot-label">Contenedor 20' (28m³)</div>
+          <div class="tot-value" id="tot-20-pct">0%</div>
+          <div class="tot-sub" id="tot-20-sub">0 m³ / 28 m³</div>
+          <div class="bar"><div class="bar-fill" id="bar-20" style="width:0%"></div></div>
+        </div>
+        <div class="container-visual" aria-hidden="true"><div class="container-fill" id="container-20-fill"></div></div>
       </div>
-      <div class="tot-card">
-        <div class="tot-label">Contenedor 40' (67m³ / 27.000 kg)</div>
-        <div class="tot-value" id="tot-40-pct">0%</div>
-        <div class="tot-sub" id="tot-40-sub">0 m³ · 0 kg</div>
-        <div class="bar"><div class="bar-fill" id="bar-40" style="width:0%"></div></div>
+      <div class="tot-card container-card">
+        <div>
+          <div class="tot-label">Contenedor 40' (67m³ / 27.000 kg)</div>
+          <div class="tot-value" id="tot-40-pct">0%</div>
+          <div class="tot-sub" id="tot-40-sub">0 m³ · 0 kg</div>
+          <div class="bar"><div class="bar-fill" id="bar-40" style="width:0%"></div></div>
+        </div>
+        <div class="container-visual" aria-hidden="true"><div class="container-fill" id="container-40-fill"></div></div>
       </div>
       <div class="tot-card">
         <div class="tot-label">Costo EXW Total</div>
@@ -286,7 +296,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <button class="btt" id="btt" onclick="window.scrollTo({top:0})" title="Volver arriba">↑</button>
 
 <footer class="footer">
-  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 06/05/2026 15:56<br>
+  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 06/05/2026 16:01<br>
   <small>Tabla informativa. Precios EXW en USD, sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
@@ -672,6 +682,13 @@ function updateAllTotales(){
   set('tot-costo-sub', fmtInt.format(Object.keys(pedido).filter(e => pedido[e]>0).length) + ' SKUs');
   const bar20 = document.getElementById('bar-20');
   const bar40 = document.getElementById('bar-40');
+  const fill20 = document.getElementById('container-20-fill');
+  const fill40 = document.getElementById('container-40-fill');
+  const setFill = (el, pct) => {
+    if (!el) return;
+    el.style.width = Math.min(pct, 100) + '%';
+    el.className = 'container-fill' + (pct >= 100 ? ' over' : pct >= 90 ? ' warn' : '');
+  };
   if (bar20){
     bar20.style.width = Math.min(pct20, 100) + '%';
     bar20.className = 'bar-fill' + (pct20 >= 100 ? ' over' : pct20 >= 90 ? ' warn' : '');
@@ -680,6 +697,8 @@ function updateAllTotales(){
     bar40.style.width = Math.min(pct40, 100) + '%';
     bar40.className = 'bar-fill' + (pct40 >= 100 ? ' over' : pct40 >= 90 ? ' warn' : '');
   }
+  setFill(fill20, pct20);
+  setFill(fill40, pct40);
   const fab = document.getElementById('fab-export');
   const clr = document.getElementById('fab-clear');
   const show = totalCajas > 0;
