@@ -32,6 +32,7 @@ body{font-family:var(--sans);color:var(--texto);background:var(--fundo);line-hei
 .auth-btn{width:100%;padding:12px;background:var(--azul);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:var(--sans);transition:background .15s}
 .auth-btn:hover{background:var(--azul-claro)}
 .auth-error{color:var(--rojo);font-size:.82rem;margin-top:8px;min-height:1em}
+.auth-hint{font-size:.72rem;color:var(--texto-claro);margin-top:10px}
 body.locked{overflow:hidden}
 body.locked > *:not(.auth-overlay){display:none !important}
 
@@ -43,7 +44,13 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .header h1 span{color:var(--azul-claro);font-weight:400;font-size:.85em}
 .sbb-logo{width:122px;height:42px;object-fit:contain;background:#fff;border-radius:4px;padding:5px 8px;box-shadow:0 2px 8px rgba(0,0,0,.18);flex:0 0 auto}
 .sbb-logo.auth-logo{width:150px;height:52px;box-shadow:0 6px 18px rgba(15,33,51,.14)}
-@media(max-width:700px){.header-inner{align-items:flex-start}.header h1{font-size:1.05rem;white-space:normal}.sbb-logo{width:104px;height:36px}}
+.session-info{font-size:.78rem;opacity:.85;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.session-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.role-badge{display:inline-flex;align-items:center;min-height:22px;padding:2px 9px;border-radius:999px;background:rgba(46,153,210,.16);border:1px solid rgba(46,153,210,.5);color:#dff4ff;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.35px}
+body.role-admin .role-badge{background:rgba(5,150,105,.22);border-color:rgba(5,150,105,.55);color:#d1fae5}
+.logout-btn{min-height:24px;padding:3px 9px;border-radius:6px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:.7rem;font-weight:700;font-family:var(--sans);cursor:pointer}
+.logout-btn:hover{background:rgba(255,255,255,.16)}
+@media(max-width:700px){.header-inner{align-items:flex-start}.header h1{font-size:1.05rem;white-space:normal}.sbb-logo{width:104px;height:36px}.session-info{text-align:left;align-items:flex-start}}
 
 .totales{background:#142a40;border-top:1px solid rgba(255,255,255,.08);padding:10px 24px}
 .totales-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -210,6 +217,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
       <input class="auth-input" id="auth-input" type="password" placeholder="Contraseña" autocomplete="off" autofocus>
       <button class="auth-btn" type="submit">Entrar</button>
       <div class="auth-error" id="auth-error"></div>
+      <div class="auth-hint">Administrador o cliente</div>
     </form>
   </div>
 </div>
@@ -220,9 +228,13 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
       <img class="sbb-logo" src="assets/sbb-logo.png" alt="Sociedade Bíblica do Brasil">
       <h1>Inventario SBB <span>— Pedido de Exportación</span></h1>
     </div>
-    <div style="font-size:.78rem;opacity:.75;text-align:right">
+    <div class="session-info">
       <div>243 SKUs · <b style="color:var(--azul-claro)">69</b> lanz · 163 reg · <span style="color:#fca5a5">11 disc</span></div>
       <div style="font-size:.7rem;opacity:.7">Generado: 08/05/2026 10:44</div>
+      <div class="session-actions">
+        <span class="role-badge" id="role-badge">Cliente</span>
+        <button class="logout-btn" id="logout-btn" type="button">Salir</button>
+      </div>
     </div>
   </div>
   <div class="totales">
@@ -315,19 +327,42 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 
 <script>
 // ===== AUTH GATE =====
-const SENHA_HASH = "e3d5250681cb0cad2d293a563473193a8bf590f335b6d4ac21b4d7ee4cae1943";
+const AUTH_PROFILES = {
+  admin: {
+    label: "Administrador",
+    hash: "e3d5250681cb0cad2d293a563473193a8bf590f335b6d4ac21b4d7ee4cae1943"
+  },
+  client: {
+    label: "Cliente",
+    hash: "a60b85d409a01d46023f90741e01b79543a3cb1ba048eaefbe5d7a63638043bf"
+  }
+};
 const AUTH_KEY = "sbb_inv_auth_2030";
 let APP_READY = false;
 let APP_STARTED = false;
+let currentRole = null;
 
 function authGet(){
-  try { return localStorage.getItem(AUTH_KEY) || sessionStorage.getItem(AUTH_KEY); }
+  try {
+    const role = localStorage.getItem(AUTH_KEY) || sessionStorage.getItem(AUTH_KEY);
+    if (role === '1') return 'admin';
+    return AUTH_PROFILES[role] ? role : null;
+  }
   catch(e){ return null; }
 }
 
-function authSet(){
-  try { localStorage.setItem(AUTH_KEY, '1'); } catch(e){}
-  try { sessionStorage.setItem(AUTH_KEY, '1'); } catch(e){}
+function authSet(role){
+  try { localStorage.setItem(AUTH_KEY, role); } catch(e){}
+  try { sessionStorage.setItem(AUTH_KEY, role); } catch(e){}
+}
+
+function authClear(){
+  try { localStorage.removeItem(AUTH_KEY); } catch(e){}
+  try { sessionStorage.removeItem(AUTH_KEY); } catch(e){}
+}
+
+function isAdmin(){
+  return currentRole === 'admin';
 }
 
 function startAppIfReady(){
@@ -342,28 +377,40 @@ async function sha256(text){
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-function unlock(){
-  document.body.classList.remove('locked');
+function unlock(role){
+  currentRole = AUTH_PROFILES[role] ? role : 'client';
+  document.body.classList.remove('locked', 'role-admin', 'role-client');
+  document.body.classList.add(`role-${currentRole}`);
   document.getElementById('auth-overlay').style.display = 'none';
+  const badge = document.getElementById('role-badge');
+  if (badge) badge.textContent = AUTH_PROFILES[currentRole].label;
   startAppIfReady();
 }
 
-if (authGet() === '1'){
-  unlock();
+const savedRole = authGet();
+if (savedRole){
+  unlock(savedRole);
 } else {
   document.getElementById('auth-form').addEventListener('submit', async e => {
     e.preventDefault();
     const v = document.getElementById('auth-input').value;
     const h = await sha256(v);
-    if (h === SENHA_HASH){
-      authSet();
-      unlock();
+    const profile = Object.entries(AUTH_PROFILES).find(([, cfg]) => cfg.hash === h);
+    if (profile){
+      const role = profile[0];
+      authSet(role);
+      unlock(role);
     } else {
       document.getElementById('auth-error').textContent = 'Contraseña incorrecta.';
       document.getElementById('auth-input').value = '';
     }
   });
 }
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+  authClear();
+  location.reload();
+});
 
 // ===== APP =====
 const COVER_LOCAL_PREFIX = "capas/";
@@ -464,6 +511,7 @@ function cardHtml(p){
   const stCls = p.s === 'Lanzamiento' ? 'lanz' : (p.s === 'Discontinuada' ? 'disc' : 'reg');
   const stLabel = p.s === 'Lanzamiento' ? 'Lanzamiento' : (p.s === 'Discontinuada' ? 'Discontinuada' : 'Regular');
   const invCls = p.i === 0 ? ' zero' : '';
+  const inventoryMeta = isAdmin() ? `<div class="meta-row"><span class="meta-label">Inventario</span><span class="meta-value${invCls}">${fmtInt.format(p.i)}</span></div>` : '';
   const cartLabel = un > 0 ? (l.cerrado ? fmt.format(l.cartones) + ' cart.' : '⚠ ' + fmt.format(l.cartones) + ' cart. (no cerrado)') : '';
   const cartCls = un > 0 && !l.cerrado ? ' open-box' : '';
   return `<div class="card${cls}${hasQty}" data-ean="${p.e}">
@@ -477,7 +525,7 @@ function cardHtml(p){
       <div class="card-desc" onclick="openModal('${p.e}')" title="${p.d.replace(/"/g,'&quot;')}">${p.d}</div>
       <div class="card-meta">
         <div class="meta-row"><span class="meta-label">Por cartón</span><span class="meta-value">${p.q} un.</span></div>
-        <div class="meta-row"><span class="meta-label">Inventario</span><span class="meta-value${invCls}">${fmtInt.format(p.i)}</span></div>
+        ${inventoryMeta}
         <div class="meta-row"><span class="meta-label">Peso/cart.</span><span class="meta-value">${fmt.format(p.p)} kg</span></div>
         <div class="meta-row"><span class="meta-label">Vol/cart.</span><span class="meta-value">${fmt.format(p.v*1000)} L</span></div>
       </div>
@@ -513,6 +561,7 @@ function renderTabla(){
   }
   if (items.length === 0) return '<p style="text-align:center;padding:60px 20px;color:#888">Sin resultados</p>';
   const arrow = c => sortBy && sortBy.col === c ? (sortBy.dir === 'asc' ? ' ↑' : ' ↓') : '';
+  const showAdmin = isAdmin();
   const rows = items.map(p => {
     const un = pedido[p.e] || 0;
     const l = calcLine(p, un);
@@ -520,6 +569,7 @@ function renderTabla(){
     const stLabel = p.s === 'Lanzamiento' ? 'Lanz' : (p.s === 'Discontinuada' ? 'Disc' : 'Reg');
     const trCls = (p.s === 'Discontinuada' ? 'disc' : '') + (un>0 ? ' has-qty' : '') + (un>0 && !l.cerrado ? ' open-box' : '');
     const invCls = p.i === 0 ? ' t-inv-zero' : '';
+    const inventoryCell = showAdmin ? `<td class="num${invCls}">${fmtInt.format(p.i)}</td>` : '';
     const cartCell = un > 0 ? (l.cerrado ? fmt.format(l.cartones) : '⚠ ' + fmt.format(l.cartones)) : '—';
     return `<tr class="${trCls}" data-ean="${p.e}">
       <td class="t-thumb-cell" onclick="openModal('${p.e}')">
@@ -532,7 +582,7 @@ function renderTabla(){
       <td class="num">${fmt.format(p.p)}</td>
       <td class="num">${fmt.format(p.v*1000)}</td>
       <td class="num t-cost">${fmtUSD.format(p.c)}</td>
-      <td class="num${invCls}">${fmtInt.format(p.i)}</td>
+      ${inventoryCell}
       <td class="num"><div class="t-qty-cell">
         <button class="t-qty-btn" data-act="dec" data-ean="${p.e}" type="button">−</button>
         <input class="t-qty-input" type="number" min="0" step="1" data-ean="${p.e}" value="${un || ''}">
@@ -560,7 +610,7 @@ function renderTabla(){
       <th data-sort="p" class="sortable num">Peso/cart kg${arrow('p')}</th>
       <th data-sort="v" class="sortable num">Vol/cart L${arrow('v')}</th>
       <th data-sort="c" class="sortable num">Costo USD${arrow('c')}</th>
-      <th data-sort="i" class="sortable num">Inventario${arrow('i')}</th>
+      ${showAdmin ? `<th data-sort="i" class="sortable num">Inventario${arrow('i')}</th>` : ''}
       <th data-sort="qty" class="sortable num">Unidades${arrow('qty')}</th>
       <th class="num">Cartones</th>
       <th class="num">Peso kg</th>
@@ -569,7 +619,7 @@ function renderTabla(){
     </tr></thead>
     <tbody>${rows}</tbody>
     <tfoot><tr>
-      <td colspan="9" style="text-align:right">TOTAL del filtro actual:</td>
+      <td colspan="${showAdmin ? 9 : 8}" style="text-align:right">TOTAL del filtro actual:</td>
       <td class="num">${fmtInt.format(fU)}</td>
       <td class="num">${fmt.format(fK)}</td>
       <td class="num">${fmt.format(fP)}</td>
@@ -745,6 +795,7 @@ function updateAllTotales(){
 
 function openModal(ean){
   const p = DATA.find(x => x.e === ean); if (!p) return;
+  const inventoryRow = isAdmin() ? `<div class="row"><span>Inventario disponible</span><b style="color:${p.i===0?'#dc2626':'inherit'}">${fmtInt.format(p.i)} un.</b></div>` : '';
   document.getElementById('modal-title').textContent = p.d;
   document.getElementById('modal-body').innerHTML = `
     <div style="text-align:center;margin-bottom:14px">
@@ -758,7 +809,7 @@ function openModal(ean){
     <div class="row"><span>Volumen por cartón</span><b>${fmt.format(p.v*1000)} L (${fmt.format(p.v)} m³)</b></div>
     <div class="row"><span>Costo EXW/copia</span><b>${fmtUSD.format(p.c)}</b></div>
     <div class="row"><span>Costo EXW/cartón</span><b>${fmtUSD.format(p.c*p.q)}</b></div>
-    <div class="row"><span>Inventario disponible</span><b style="color:${p.i===0?'#dc2626':'inherit'}">${fmtInt.format(p.i)} un.</b></div>
+    ${inventoryRow}
   `;
   document.getElementById('modal').classList.add('show');
 }
@@ -822,7 +873,8 @@ function initApp(){
 }
 
 APP_READY = true;
-if (authGet() === '1') unlock();
+const readyRole = authGet();
+if (readyRole) unlock(readyRole);
 </script>
 </body>
 </html>
