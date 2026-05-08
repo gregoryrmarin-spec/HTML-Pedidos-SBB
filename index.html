@@ -43,14 +43,22 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .header h1{font-size:1.3rem;font-weight:700;white-space:nowrap}
 .header h1 span{color:var(--azul-claro);font-weight:400;font-size:.85em}
 .sbb-logo{width:122px;height:42px;object-fit:contain;background:#fff;border-radius:4px;padding:5px 8px;box-shadow:0 2px 8px rgba(0,0,0,.18);flex:0 0 auto}
+.sbb-logo.ubs-logo{width:150px;height:56px;padding:6px 10px}
 .sbb-logo.auth-logo{width:150px;height:52px;box-shadow:0 6px 18px rgba(15,33,51,.14)}
 .session-info{font-size:.78rem;opacity:.85;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 .session-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 .role-badge{display:inline-flex;align-items:center;min-height:22px;padding:2px 9px;border-radius:999px;background:rgba(46,153,210,.16);border:1px solid rgba(46,153,210,.5);color:#dff4ff;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.35px}
 body.role-admin .role-badge{background:rgba(5,150,105,.22);border-color:rgba(5,150,105,.55);color:#d1fae5}
+body.role-public .role-badge{background:rgba(254,175,1,.18);border-color:rgba(254,175,1,.56);color:#fff2c2}
 .logout-btn{min-height:24px;padding:3px 9px;border-radius:6px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:.7rem;font-weight:700;font-family:var(--sans);cursor:pointer}
 .logout-btn:hover{background:rgba(255,255,255,.16)}
-@media(max-width:700px){.header-inner{align-items:flex-start}.header h1{font-size:1.05rem;white-space:normal}.sbb-logo{width:104px;height:36px}.session-info{text-align:left;align-items:flex-start}}
+@media(max-width:700px){.header-inner{align-items:flex-start}.header h1{font-size:1.05rem;white-space:normal}.sbb-logo{width:104px;height:36px}.sbb-logo.ubs-logo{width:132px;height:49px}.session-info{text-align:left;align-items:flex-start}}
+body.role-public{padding-bottom:70px}
+body.role-public .totales,
+body.role-public .order-only,
+body.role-public .fab{display:none !important}
+body.role-public .disclaimer{background:#eef8fb;border-bottom-color:#bddfec;color:#275366}
+body.role-public .card-meta{grid-template-columns:1fr}
 
 .totales{background:#142a40;border-top:1px solid rgba(255,255,255,.08);padding:10px 24px}
 .totales-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -217,7 +225,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
       <input class="auth-input" id="auth-input" type="password" placeholder="Contraseña" autocomplete="off" autofocus>
       <button class="auth-btn" type="submit">Entrar</button>
       <div class="auth-error" id="auth-error"></div>
-      <div class="auth-hint">Administrador o cliente</div>
+      <div class="auth-hint">Administrador, cliente o público</div>
     </form>
   </div>
 </div>
@@ -225,8 +233,8 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <header class="header">
   <div class="header-inner">
     <div class="header-brand">
-      <img class="sbb-logo" src="assets/sbb-logo.png" alt="Sociedade Bíblica do Brasil">
-      <h1>Inventario SBB <span>— Pedido de Exportación</span></h1>
+      <img class="sbb-logo" id="brand-logo" src="assets/sbb-logo.png" alt="Sociedade Bíblica do Brasil">
+      <h1><span id="header-title-main">Inventario SBB</span> <span id="header-subtitle">— Pedido de Exportación</span></h1>
     </div>
     <div class="session-info">
       <div>243 SKUs · <b style="color:var(--azul-claro)">69</b> lanz · 163 reg · <span style="color:#fca5a5">11 disc</span></div>
@@ -279,8 +287,8 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 
 <div class="disclaimer">
   <div class="disclaimer-inner">
-    <span class="rojo">Las Biblias en rojo están con un precio especial. Están discontinuadas y ya no serán más producidas.</span>
-    Pedido en <b>unidades</b>; los cartones se calculan automáticamente. Para cartón cerrado, las unidades deben ser múltiplo de la cantidad por cartón (los botones <b>−/+</b> avanzan en cartones). Costos EXW en USD.
+    <span id="disclaimer-primary" class="rojo">Las Biblias en rojo están con un precio especial. Están discontinuadas y ya no serán más producidas.</span>
+    <span id="disclaimer-secondary">Pedido en <b>unidades</b>; los cartones se calculan automáticamente. Para cartón cerrado, las unidades deben ser múltiplo de la cantidad por cartón (los botones <b>−/+</b> avanzan en cartones). Costos EXW en USD.</span>
   </div>
 </div>
 
@@ -291,9 +299,9 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     <button class="filter-btn cat-lanz" data-filter="lanz">Lanzamientos (69)</button>
     <button class="filter-btn" data-filter="reg">Regulares (163)</button>
     <button class="filter-btn cat-disc" data-filter="disc">Discontinuadas (11)</button>
-    <span class="filter-sep"></span>
-    <button class="filter-btn cat-pedido" data-filter="pedido">En pedido (0)</button>
-    <span class="filter-sep"></span>
+    <span class="filter-sep order-only"></span>
+    <button class="filter-btn cat-pedido order-only" data-filter="pedido">En pedido (0)</button>
+    <span class="filter-sep order-only"></span>
     <div class="view-toggle">
       <button data-view="cards" class="active" title="Vista de tarjetas">▦ Cards</button>
       <button data-view="tabla" title="Vista de tabla">☰ Tabla</button>
@@ -321,8 +329,8 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <button class="btt" id="btt" onclick="window.scrollTo({top:0})" title="Volver arriba">↑</button>
 
 <footer class="footer">
-  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 08/05/2026 10:44<br>
-  <small>Tabla informativa. Precios EXW en USD, sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
+  <span id="footer-title">Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 08/05/2026 10:44</span><br>
+  <small id="footer-note">Tabla informativa. Precios EXW en USD, sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
 <script>
@@ -335,6 +343,10 @@ const AUTH_PROFILES = {
   client: {
     label: "Cliente",
     hash: "a60b85d409a01d46023f90741e01b79543a3cb1ba048eaefbe5d7a63638043bf"
+  },
+  public: {
+    label: "Público geral",
+    hash: "7c2e8993d067872d3ee5c968b947250efdf0d2919b25bcf7a064c8274f4676b7"
   }
 };
 const AUTH_KEY = "sbb_inv_auth_2030";
@@ -365,6 +377,14 @@ function isAdmin(){
   return currentRole === 'admin';
 }
 
+function isPublic(){
+  return currentRole === 'public';
+}
+
+function canOrder(){
+  return !isPublic();
+}
+
 function startAppIfReady(){
   if (!APP_READY || APP_STARTED || typeof initApp !== 'function') return;
   APP_STARTED = true;
@@ -379,12 +399,52 @@ async function sha256(text){
 
 function unlock(role){
   currentRole = AUTH_PROFILES[role] ? role : 'client';
-  document.body.classList.remove('locked', 'role-admin', 'role-client');
+  document.body.classList.remove('locked', 'role-admin', 'role-client', 'role-public');
   document.body.classList.add(`role-${currentRole}`);
   document.getElementById('auth-overlay').style.display = 'none';
   const badge = document.getElementById('role-badge');
   if (badge) badge.textContent = AUTH_PROFILES[currentRole].label;
+  updateRoleUi();
   startAppIfReady();
+}
+
+function updateRoleUi(){
+  const publicMode = isPublic();
+  const brandLogo = document.getElementById('brand-logo');
+  if (brandLogo){
+    brandLogo.src = publicMode ? 'assets/ubs-logo.svg' : 'assets/sbb-logo.png';
+    brandLogo.alt = publicMode ? 'Sociedades Bíblicas Unidas' : 'Sociedade Bíblica do Brasil';
+    brandLogo.classList.toggle('ubs-logo', publicMode);
+  }
+  const titleMain = document.getElementById('header-title-main');
+  if (titleMain) titleMain.textContent = publicMode ? 'Catálogo SBB' : 'Inventario SBB';
+  const subtitle = document.getElementById('header-subtitle');
+  if (subtitle) subtitle.textContent = publicMode ? '— Catálogo público' : '— Pedido de Exportación';
+  const disclaimerPrimary = document.getElementById('disclaimer-primary');
+  if (disclaimerPrimary){
+    disclaimerPrimary.classList.toggle('rojo', !publicMode);
+    disclaimerPrimary.textContent = publicMode
+      ? 'Catálogo público de productos SBB.'
+      : 'Las Biblias en rojo están con un precio especial. Están discontinuadas y ya no serán más producidas.';
+  }
+  const disclaimerSecondary = document.getElementById('disclaimer-secondary');
+  if (disclaimerSecondary){
+    disclaimerSecondary.innerHTML = publicMode
+      ? 'Información general para consulta. Para condiciones comerciales, contacte al equipo de exportación.'
+      : 'Pedido en <b>unidades</b>; los cartones se calculan automáticamente. Para cartón cerrado, las unidades deben ser múltiplo de la cantidad por cartón (los botones <b>−/+</b> avanzan en cartones). Costos EXW en USD.';
+  }
+  const footerTitle = document.getElementById('footer-title');
+  if (footerTitle){
+    footerTitle.textContent = publicMode
+      ? 'Sociedades Bíblicas Unidas — Catálogo público · Generado en 08/05/2026 10:44'
+      : 'Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 08/05/2026 10:44';
+  }
+  const footerNote = document.getElementById('footer-note');
+  if (footerNote){
+    footerNote.textContent = publicMode
+      ? 'Tabla informativa para consulta pública.'
+      : 'Tabla informativa. Precios EXW en USD, sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).';
+  }
 }
 
 const savedRole = authGet();
@@ -476,6 +536,10 @@ function filteredData(){
 }
 
 function render(){
+  if (!canOrder() && activeFilter === 'pedido'){
+    activeFilter = 'all';
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === activeFilter));
+  }
   const main = document.getElementById('catalog');
   if (viewMode === 'tabla'){
     main.innerHTML = renderTabla();
@@ -504,7 +568,9 @@ function renderCards(){
 }
 
 function cardHtml(p){
-  const un = pedido[p.e] || 0;
+  const publicMode = isPublic();
+  const orderMode = canOrder();
+  const un = orderMode ? (pedido[p.e] || 0) : 0;
   const l = calcLine(p, un);
   const hasQty = un > 0 ? ' has-qty' : '';
   const cls = p.s === 'Discontinuada' ? ' disc' : '';
@@ -512,8 +578,28 @@ function cardHtml(p){
   const stLabel = p.s === 'Lanzamiento' ? 'Lanzamiento' : (p.s === 'Discontinuada' ? 'Discontinuada' : 'Regular');
   const invCls = p.i === 0 ? ' zero' : '';
   const inventoryMeta = isAdmin() ? `<div class="meta-row"><span class="meta-label">Inventario</span><span class="meta-value${invCls}">${fmtInt.format(p.i)}</span></div>` : '';
+  const metaHtml = publicMode
+    ? `<div class="meta-row"><span class="meta-label">Traducción</span><span class="meta-value">${p.t}</span></div>`
+    : `<div class="meta-row"><span class="meta-label">Por cartón</span><span class="meta-value">${p.q} un.</span></div>
+        ${inventoryMeta}
+        <div class="meta-row"><span class="meta-label">Peso/cart.</span><span class="meta-value">${fmt.format(p.p)} kg</span></div>
+        <div class="meta-row"><span class="meta-label">Vol/cart.</span><span class="meta-value">${fmt.format(p.v*1000)} L</span></div>`;
+  const costHtml = publicMode ? '' : `<div class="card-cost">
+        <span class="cost-label">Costo EXW/copia</span>
+        <span class="cost-value">${fmtUSD.format(p.c)}</span>
+      </div>`;
   const cartLabel = un > 0 ? (l.cerrado ? fmt.format(l.cartones) + ' cart.' : '⚠ ' + fmt.format(l.cartones) + ' cart. (no cerrado)') : '';
   const cartCls = un > 0 && !l.cerrado ? ' open-box' : '';
+  const qtyHtml = orderMode ? `<div class="qty-row">
+        <span class="qty-label">Unidades:</span>
+        <button class="qty-btn" data-act="dec" data-ean="${p.e}" type="button">−</button>
+        <input class="qty-input" type="number" min="0" step="1" data-ean="${p.e}" value="${un}">
+        <button class="qty-btn" data-act="inc" data-ean="${p.e}" type="button">+</button>
+      </div>
+      <div class="qty-totales${un>0?' active':''}${cartCls}" data-ean-tot="${p.e}">
+        <span>${cartLabel}</span>
+        <span>${un>0 ? fmtUSD.format(l.costo) : ''}</span>
+      </div>` : '';
   return `<div class="card${cls}${hasQty}" data-ean="${p.e}">
     <div class="card-img" onclick="openModal('${p.e}')">
       <span class="card-status ${stCls}">${stLabel}</span>
@@ -524,25 +610,10 @@ function cardHtml(p){
       <div class="card-isbn">${p.e}</div>
       <div class="card-desc" onclick="openModal('${p.e}')" title="${p.d.replace(/"/g,'&quot;')}">${p.d}</div>
       <div class="card-meta">
-        <div class="meta-row"><span class="meta-label">Por cartón</span><span class="meta-value">${p.q} un.</span></div>
-        ${inventoryMeta}
-        <div class="meta-row"><span class="meta-label">Peso/cart.</span><span class="meta-value">${fmt.format(p.p)} kg</span></div>
-        <div class="meta-row"><span class="meta-label">Vol/cart.</span><span class="meta-value">${fmt.format(p.v*1000)} L</span></div>
+        ${metaHtml}
       </div>
-      <div class="card-cost">
-        <span class="cost-label">Costo EXW/copia</span>
-        <span class="cost-value">${fmtUSD.format(p.c)}</span>
-      </div>
-      <div class="qty-row">
-        <span class="qty-label">Unidades:</span>
-        <button class="qty-btn" data-act="dec" data-ean="${p.e}" type="button">−</button>
-        <input class="qty-input" type="number" min="0" step="1" data-ean="${p.e}" value="${un}">
-        <button class="qty-btn" data-act="inc" data-ean="${p.e}" type="button">+</button>
-      </div>
-      <div class="qty-totales${un>0?' active':''}${cartCls}" data-ean-tot="${p.e}">
-        <span>${cartLabel}</span>
-        <span>${un>0 ? fmtUSD.format(l.costo) : ''}</span>
-      </div>
+      ${costHtml}
+      ${qtyHtml}
     </div>
   </div>`;
 }
@@ -561,6 +632,33 @@ function renderTabla(){
   }
   if (items.length === 0) return '<p style="text-align:center;padding:60px 20px;color:#888">Sin resultados</p>';
   const arrow = c => sortBy && sortBy.col === c ? (sortBy.dir === 'asc' ? ' ↑' : ' ↓') : '';
+  const publicMode = isPublic();
+  if (publicMode){
+    const rows = items.map(p => {
+      const stCls = p.s === 'Lanzamiento' ? 'lanz' : (p.s === 'Discontinuada' ? 'disc' : 'reg');
+      const stLabel = p.s === 'Lanzamiento' ? 'Lanz' : (p.s === 'Discontinuada' ? 'Disc' : 'Reg');
+      const trCls = p.s === 'Discontinuada' ? 'disc' : '';
+      return `<tr class="${trCls}" data-ean="${p.e}">
+        <td class="t-thumb-cell" onclick="openModal('${p.e}')">
+          <div class="t-thumb"><img src="${coverUrl(p.e)}" data-ean="${p.e}" onerror="tryFallback(this)" alt=""><span class="placeholder">📖</span></div>
+        </td>
+        <td class="t-isbn">${p.e}</td>
+        <td class="t-desc" onclick="openModal('${p.e}')" title="${p.d.replace(/"/g,'&quot;')}">${p.d}</td>
+        <td><span class="t-status ${stCls}">${stLabel}</span></td>
+        <td>${p.t}</td>
+      </tr>`;
+    }).join('');
+    return `<div class="tabla-wrap"><table class="inv">
+      <thead><tr>
+        <th></th>
+        <th data-sort="e" class="sortable">ISBN${arrow('e')}</th>
+        <th data-sort="d" class="sortable">Descripción${arrow('d')}</th>
+        <th data-sort="s" class="sortable">Status${arrow('s')}</th>
+        <th data-sort="t" class="sortable">Traducción${arrow('t')}</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+  }
   const showAdmin = isAdmin();
   const rows = items.map(p => {
     const un = pedido[p.e] || 0;
@@ -685,6 +783,7 @@ function bindTablaEvents(){
 }
 
 function setQty(ean, un){
+  if (!canOrder()) return;
   if (un > 0) pedido[ean] = un; else delete pedido[ean];
   localStorage.setItem(STORAGE_KEY, JSON.stringify(pedido));
   const p = DATA.find(x => x.e === ean);
@@ -737,6 +836,13 @@ function setQty(ean, un){
 }
 
 function updateAllTotales(){
+  if (!canOrder()){
+    const fab = document.getElementById('fab-export');
+    const clr = document.getElementById('fab-clear');
+    if (fab) fab.style.display = 'none';
+    if (clr) clr.style.display = 'none';
+    return;
+  }
   let totalCajas = 0, totalUn = 0, totalPeso = 0, totalVol = 0, totalCosto = 0;
   for (const ean in pedido){
     const un = pedido[ean]; if (!un) continue;
@@ -795,7 +901,15 @@ function updateAllTotales(){
 
 function openModal(ean){
   const p = DATA.find(x => x.e === ean); if (!p) return;
+  const publicMode = isPublic();
   const inventoryRow = isAdmin() ? `<div class="row"><span>Inventario disponible</span><b style="color:${p.i===0?'#dc2626':'inherit'}">${fmtInt.format(p.i)} un.</b></div>` : '';
+  const commercialRows = publicMode ? '' : `
+    <div class="row"><span>Cantidad por cartón</span><b>${p.q} un.</b></div>
+    <div class="row"><span>Peso por cartón</span><b>${fmt.format(p.p)} kg</b></div>
+    <div class="row"><span>Volumen por cartón</span><b>${fmt.format(p.v*1000)} L (${fmt.format(p.v)} m³)</b></div>
+    <div class="row"><span>Costo EXW/copia</span><b>${fmtUSD.format(p.c)}</b></div>
+    <div class="row"><span>Costo EXW/cartón</span><b>${fmtUSD.format(p.c*p.q)}</b></div>
+    ${inventoryRow}`;
   document.getElementById('modal-title').textContent = p.d;
   document.getElementById('modal-body').innerHTML = `
     <div style="text-align:center;margin-bottom:14px">
@@ -804,12 +918,7 @@ function openModal(ean){
     <div class="row"><span>ISBN</span><b>${p.e}</b></div>
     <div class="row"><span>Status</span><b>${p.s}</b></div>
     <div class="row"><span>Traducción</span><b>${p.t}</b></div>
-    <div class="row"><span>Cantidad por cartón</span><b>${p.q} un.</b></div>
-    <div class="row"><span>Peso por cartón</span><b>${fmt.format(p.p)} kg</b></div>
-    <div class="row"><span>Volumen por cartón</span><b>${fmt.format(p.v*1000)} L (${fmt.format(p.v)} m³)</b></div>
-    <div class="row"><span>Costo EXW/copia</span><b>${fmtUSD.format(p.c)}</b></div>
-    <div class="row"><span>Costo EXW/cartón</span><b>${fmtUSD.format(p.c*p.q)}</b></div>
-    ${inventoryRow}
+    ${commercialRows}
   `;
   document.getElementById('modal').classList.add('show');
 }
