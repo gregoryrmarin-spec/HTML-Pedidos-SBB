@@ -54,6 +54,8 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .container-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none}
 .container-20-visual .container-img{left:auto;right:0;width:50%}
 .container-20-visual .container-fill{left:50%;max-width:50%}
+.container-40-visual .container-img{left:auto;right:0;width:90%}
+.container-40-visual .container-fill{max-width:90%}
 .container-fill{position:absolute;left:0;top:0;width:0%;height:100%;border-radius:8px;background:linear-gradient(90deg,rgba(46,153,210,.78),rgba(139,217,255,.95));transition:width .25s,filter .25s;z-index:4;mix-blend-mode:screen;clip-path:polygon(0 14%,100% 0,100% 88%,0 100%);box-shadow:0 0 20px rgba(72,179,232,.42)}
 .container-20-visual .container-fill{left:50%;max-width:50%}
 .container-fill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 2px,transparent 2px 16px)}
@@ -220,7 +222,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     </div>
     <div style="font-size:.78rem;opacity:.75;text-align:right">
       <div>243 SKUs · <b style="color:var(--azul-claro)">69</b> lanz · 163 reg · <span style="color:#fca5a5">11 disc</span></div>
-      <div style="font-size:.7rem;opacity:.7">Generado: 08/05/2026 09:33</div>
+      <div style="font-size:.7rem;opacity:.7">Generado: 08/05/2026 10:17</div>
     </div>
   </div>
   <div class="totales">
@@ -307,7 +309,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <button class="btt" id="btt" onclick="window.scrollTo({top:0})" title="Volver arriba">↑</button>
 
 <footer class="footer">
-  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 08/05/2026 09:33<br>
+  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 08/05/2026 10:17<br>
   <small>Tabla informativa. Precios EXW en USD, sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
@@ -727,7 +729,7 @@ function updateAllTotales(){
     bar40.className = 'bar-fill' + (pct40 >= 100 ? ' over' : pct40 >= 90 ? ' warn' : '');
   }
   setFill(fill20, pct20, 0.5);
-  setFill(fill40, pct40);
+  setFill(fill40, pct40, 0.9);
   const fab = document.getElementById('fab-export');
   const clr = document.getElementById('fab-clear');
   const show = totalCajas > 0;
