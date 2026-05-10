@@ -132,6 +132,11 @@ body.role-public .card-meta{grid-template-columns:1fr}
 .view-toggle button.active{background:var(--azul-claro);color:#fff;font-weight:700}
 .view-toggle button:hover:not(.active){background:rgba(255,255,255,.1);color:#fff}
 
+.mobile-column-toggle{display:none;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:3px;background:rgba(255,255,255,.04)}
+.mobile-column-toggle span{padding:0 4px;color:rgba(255,255,255,.66);font-size:.68rem;font-weight:700;white-space:nowrap;text-transform:uppercase;letter-spacing:.25px}
+.mobile-column-toggle button{min-width:28px;height:30px;border:0;border-radius:7px;background:transparent;color:rgba(255,255,255,.78);font-size:.72rem;font-weight:800;cursor:pointer}
+.mobile-column-toggle button.active{background:var(--azul-claro);color:#fff;box-shadow:0 6px 14px rgba(46,153,210,.26)}
+
 @media(max-width:700px){
   .disclaimer{padding:6px 14px;font-size:.68rem;line-height:1.35;box-shadow:0 8px 18px rgba(15,33,51,.12)}
   .disclaimer-inner{max-height:38px;overflow:hidden}
@@ -146,6 +151,8 @@ body.role-public .card-meta{grid-template-columns:1fr}
   .filter-sep{display:none}
   .view-toggle{flex:0 0 auto;height:38px;border-radius:10px}
   .view-toggle button{padding:7px 10px;font-size:.72rem}
+  .mobile-column-toggle{display:inline-flex;flex:0 0 auto;height:38px}
+  .mobile-column-toggle button{height:30px;min-width:28px}
   .main{padding:14px 14px 60px}
 }
 
@@ -197,7 +204,7 @@ body.role-public .card-meta{grid-template-columns:1fr}
 @media(max-width:700px){
   .section-title{margin:18px 0 10px;font-size:1.05rem;padding-bottom:6px}
   .section-title .badge{font-size:.62rem;padding:2px 8px}
-  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .grid{grid-template-columns:repeat(var(--mobile-card-columns,2),minmax(0,1fr));gap:10px}
   .card{border-radius:12px;box-shadow:0 8px 22px rgba(15,33,51,.08)}
   .card:hover{transform:none}
   .card-img{aspect-ratio:1/1.25}
@@ -369,6 +376,14 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     <div class="view-toggle">
       <button data-view="cards" class="active" title="Vista de tarjetas">▦ Cards</button>
       <button data-view="tabla" title="Vista de tabla">☰ Tabla</button>
+    </div>
+    <div class="mobile-column-toggle" aria-label="Columnas no celular">
+      <span>Colunas</span>
+      <button type="button" data-mobile-cols="1">1</button>
+      <button type="button" data-mobile-cols="2">2</button>
+      <button type="button" data-mobile-cols="4">4</button>
+      <button type="button" data-mobile-cols="6">6</button>
+      <button type="button" data-mobile-cols="8">8</button>
     </div>
   </div>
 </div>
@@ -570,6 +585,8 @@ try { pedido = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e)
 let activeFilter = 'all';
 let searchTerm = '';
 let viewMode = localStorage.getItem('sbb_view') || 'cards';
+let mobileColumns = Number(localStorage.getItem('sbb_mobile_columns') || 2);
+if (![1, 2, 4, 6, 8].includes(mobileColumns)) mobileColumns = 2;
 let sortBy = null;
 
 function calcLine(p, un){
@@ -1021,7 +1038,21 @@ function setView(mode){
   render();
 }
 
+function applyMobileColumns(){
+  document.documentElement.style.setProperty('--mobile-card-columns', mobileColumns);
+  document.querySelectorAll('[data-mobile-cols]').forEach((button) => {
+    button.classList.toggle('active', Number(button.dataset.mobileCols) === mobileColumns);
+  });
+}
+
+function setMobileColumns(columns){
+  mobileColumns = columns;
+  localStorage.setItem('sbb_mobile_columns', String(columns));
+  applyMobileColumns();
+}
+
 function initApp(){
+  applyMobileColumns();
   document.querySelectorAll('.view-toggle button').forEach(b => b.classList.toggle('active', b.dataset.view === viewMode));
   render();
   document.getElementById('search').addEventListener('input', e => { searchTerm = e.target.value; render(); });
@@ -1036,6 +1067,9 @@ function initApp(){
   });
   document.querySelectorAll('.view-toggle button').forEach(b => {
     b.onclick = () => setView(b.dataset.view);
+  });
+  document.querySelectorAll('[data-mobile-cols]').forEach((button) => {
+    button.onclick = () => setMobileColumns(Number(button.dataset.mobileCols));
   });
   window.addEventListener('scroll', () => {
     const btt = document.getElementById('btt');
