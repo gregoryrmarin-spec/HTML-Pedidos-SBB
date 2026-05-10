@@ -207,16 +207,16 @@ body.role-public .card-meta{grid-template-columns:1fr}
   .grid{grid-template-columns:repeat(var(--mobile-card-columns,2),minmax(0,1fr));gap:10px}
   .card{border-radius:12px;box-shadow:0 8px 22px rgba(15,33,51,.08)}
   .card:hover{transform:none}
-  .card-img{aspect-ratio:1/1.25}
+  .card-img{aspect-ratio:1/1.18}
   .card-status{top:6px;left:6px;padding:2px 6px;font-size:.55rem;border-radius:999px}
   .card-body{padding:8px;gap:5px}
-  .card-isbn{font-size:.56rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .card-desc{font-size:.68rem;line-height:1.25;-webkit-line-clamp:3;min-height:2.55em}
+  .card-isbn{font-size:.56rem;white-space:normal;overflow:visible;word-break:break-word}
+  .card-desc{display:block;min-height:0;font-size:.72rem;line-height:1.28;overflow:visible;word-break:break-word;hyphens:auto}
   .card-meta{grid-template-columns:1fr;gap:3px;font-size:.62rem;padding-top:5px}
-  .meta-label{font-size:.52rem}
+  .meta-label{font-size:.52rem;line-height:1.15}
   .card-cost{align-items:flex-start;gap:4px;flex-direction:column}
   .cost-label{font-size:.55rem}
-  .cost-value{font-size:.82rem}
+  .cost-value{font-size:.84rem}
   .qty-row{gap:4px;margin-top:5px;padding-top:5px;flex-wrap:wrap}
   .qty-label{flex:1 0 100%;font-size:.62rem}
   .qty-btn{width:24px;height:24px;font-size:.82rem}
@@ -381,9 +381,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
       <span>Colunas</span>
       <button type="button" data-mobile-cols="1">1</button>
       <button type="button" data-mobile-cols="2">2</button>
-      <button type="button" data-mobile-cols="4">4</button>
-      <button type="button" data-mobile-cols="6">6</button>
-      <button type="button" data-mobile-cols="8">8</button>
+      <button type="button" data-mobile-cols="3">3</button>
     </div>
   </div>
 </div>
@@ -586,7 +584,7 @@ let activeFilter = 'all';
 let searchTerm = '';
 let viewMode = localStorage.getItem('sbb_view') || 'cards';
 let mobileColumns = Number(localStorage.getItem('sbb_mobile_columns') || 2);
-if (![1, 2, 4, 6, 8].includes(mobileColumns)) mobileColumns = 2;
+if (![1, 2, 3].includes(mobileColumns)) mobileColumns = 2;
 let sortBy = null;
 
 function calcLine(p, un){
