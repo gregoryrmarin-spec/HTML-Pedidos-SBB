@@ -858,9 +858,7 @@ function updateAllTotales(){
   const pct40 = Math.max(pct40m3, pct40kg);
   const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
   set('tot-20-pct', fmt.format(Math.min(pct20, 999)) + '%');
-  set('tot-20-sub', `${fmt.format(totalVol)} m³ / ${CAP_20_M3} m³`);
   set('tot-40-pct', fmt.format(Math.min(pct40, 999)) + '%');
-  set('tot-40-sub', `${fmt.format(totalVol)} m³ · ${fmtInt.format(totalPeso)} kg`);
   set('tot-costo', fmtUSD.format(totalCosto));
   set('tot-cantidad', fmtInt.format(totalUn) + ' un.');
   set('tot-cajas-sub', fmt.format(totalCajas) + ' cartones');
