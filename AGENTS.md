@@ -65,3 +65,18 @@ Ao terminar uma alteração publicada, diga:
 - qual foi a mensagem do commit;
 - se o push para main foi concluído;
 - onde devo olhar no site para confirmar.
+
+Depois:
+1. rode git status;
+2. faça git add AGENTS.md;
+3. crie o commit:
+   Add permanent Codex instructions
+4. rode git fetch origin main;
+5. faça rebase com origin/main se necessário;
+6. faça push com:
+   git push origin HEAD:main
+
+Não altere index.html.
+Não imprima GH_TOKEN.
+Não rode echo $GH_TOKEN.
+Não coloque token no remote.
