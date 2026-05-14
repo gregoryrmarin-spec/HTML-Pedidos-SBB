@@ -20,10 +20,17 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_HTML = ROOT / "index.html"
 DEFAULT_DOWNLOADS = Path.home() / "Downloads"
 DATA_RE = re.compile(r"const DATA = (\[.*?\]);\s*\n\s*let pedido", re.S)
+STOCK_FILE_RE = re.compile(r"^Saída1 \(\d+\)\.xlsx$", re.I)
+LOG_FILE: Path | None = None
 
 
 def log(message: str) -> None:
-    print(f"[{dt.datetime.now():%H:%M:%S}] {message}", flush=True)
+    line = f"[{dt.datetime.now():%H:%M:%S}] {message}"
+    print(line, flush=True)
+    if LOG_FILE:
+        LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with LOG_FILE.open("a", encoding="utf-8") as fh:
+            fh.write(line + "\n")
 
 
 def normalize_header(value: object) -> str:
@@ -71,11 +78,18 @@ def workbook_has_stock_layout(path: Path) -> bool:
 
 
 def find_stock_file(downloads: Path) -> Path:
-    candidates = sorted(downloads.glob("*.xlsx"), key=lambda p: p.stat().st_mtime, reverse=True)
-    for path in candidates:
-        if workbook_has_stock_layout(path):
-            return path
-    raise FileNotFoundError(f"Nenhuma planilha .xlsx com colunas ISBN e DISPONIBLE em {downloads}")
+    candidates = sorted(
+        (p for p in downloads.glob("*.xlsx") if STOCK_FILE_RE.fullmatch(p.name)),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    if not candidates:
+        raise FileNotFoundError(f"Nenhum arquivo 'Saída1 (numero).xlsx' encontrado em {downloads}")
+
+    path = candidates[0]
+    if not workbook_has_stock_layout(path):
+        raise ValueError(f"O arquivo selecionado pelo nome nao tem colunas ISBN e DISPONIBLE: {path}")
+    return path
 
 
 def load_stock(path: Path) -> tuple[dict[str, int], dict[str, object]]:
@@ -180,16 +194,25 @@ def git_publish(repo: Path, html_path: Path) -> bool:
 
 
 def main() -> int:
+    global LOG_FILE
+
     parser = argparse.ArgumentParser(description="Atualiza o estoque disponivel embutido no HTML do catalogo.")
     parser.add_argument("--html", type=Path, default=DEFAULT_HTML, help="Caminho do index.html.")
-    parser.add_argument("--stock", type=Path, help="Planilha diaria. Se omitido, usa a mais recente em Downloads.")
+    parser.add_argument("--stock", type=Path, help="Planilha diaria. Se omitido, usa o arquivo Saída1 (numero).xlsx mais recente em Downloads.")
     parser.add_argument("--downloads", type=Path, default=DEFAULT_DOWNLOADS, help="Pasta onde procurar a planilha diaria.")
+    parser.add_argument("--log-dir", type=Path, help="Pasta dos logs. Padrao: logs dentro do repositorio.")
     parser.add_argument("--dry-run", action="store_true", help="Calcula o impacto sem gravar o HTML.")
     parser.add_argument("--push", action="store_true", help="Faz git pull, add, commit e push do index.html.")
     args = parser.parse_args()
 
     html_path = args.html.resolve()
     repo = html_path.parent
+    log_dir = args.log_dir.resolve() if args.log_dir else repo / "logs"
+    LOG_FILE = log_dir / f"atualizar_estoque_{dt.datetime.now():%Y-%m-%d}.log"
+    log("=" * 72)
+    log(f"Log: {LOG_FILE}")
+    log("Criterio da planilha diaria: arquivo mais recente em Downloads com nome Saída1 (numero).xlsx")
+
     if args.push and not args.dry_run:
         log("Sincronizando repositorio antes da atualizacao...")
         ensure_clean_and_current(repo)
