@@ -553,12 +553,13 @@ document.getElementById('logout-btn').addEventListener('click', () => {
 const COVER_LOCAL_PREFIX = "capas/";
 const COVER_MB = "https://api.metabooks.com/api/v1/cover/";
 const COVER_TOKEN = "93f03634-f8eb-4747-b870-46f9d24a7e76";
+const COVER_LOCAL_SUFFIX = "_F.jpg";
 const STORAGE_KEY = "sbb_inventario_pedido";
 const CAP_20_M3 = 28.0;
 const CAP_40_M3 = 67.0;
 const CAP_40_KG = 27000.0;
 
-function coverUrl(ean){ return COVER_LOCAL_PREFIX + ean + "_01.jpg"; }
+function coverUrl(ean){ return COVER_LOCAL_PREFIX + ean + COVER_LOCAL_SUFFIX; }
 function coverUrlMB(ean){ return COVER_MB + ean + "/m?access_token=" + COVER_TOKEN; }
 function tryFallback(img){
   const ean = img.dataset.ean;
