@@ -61,7 +61,7 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .container-fill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 2px,transparent 2px 16px)}
 .container-fill.warn{filter:saturate(1.15) brightness(1.12)}
 .container-fill.over{filter:saturate(1.35) brightness(1.16)}
-.tot-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5);font-weight:600}
+.tot-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.35px;color:rgba(255,255,255,.5);font-weight:600;white-space:nowrap}
 .tot-value{font-size:1.05rem;font-weight:700;color:#fff;margin-top:1px;font-variant-numeric:tabular-nums}
 .container-card .tot-value{font-size:.9rem}
 .tot-sub{font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px;font-variant-numeric:tabular-nums}
@@ -82,7 +82,9 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .filter-btn.cat-lanz.active{background:var(--verde);border-color:var(--verde)}
 .filter-btn.cat-disc.active{background:var(--rojo);border-color:var(--rojo)}
 .filter-btn.cat-pedido.active{background:var(--laranja);border-color:var(--laranja)}
-.stock-toggle{display:inline-flex;gap:6px;flex-wrap:wrap}
+.stock-box{display:flex;flex-direction:column;gap:6px;padding:6px 8px;border:1px solid rgba(255,255,255,.2);border-radius:8px;background:rgba(255,255,255,.05)}
+.stock-title{color:rgba(255,255,255,.65);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.35px}
+.stock-toggle{display:flex;gap:6px;flex-wrap:wrap}
 
 .view-toggle,.cols-toggle{display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
 .view-toggle button,.cols-toggle button{padding:6px 12px;background:transparent;color:rgba(255,255,255,.75);border:none;font-size:.78rem;cursor:pointer;font-family:inherit}
@@ -244,7 +246,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     <div class="totales-inner">
       <div class="tot-card container-card">
         <div>
-          <div class="tot-label">20' Contenedor</div>
+          <div class="tot-label">20' contenedor</div>
           <div class="tot-value" id="tot-20-pct">0%</div>
         </div>
         <div class="container-visual container-20-visual" aria-hidden="true">
@@ -254,7 +256,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
       </div>
       <div class="tot-card container-card">
         <div>
-          <div class="tot-label">40' Contenedor</div>
+          <div class="tot-label">40' contenedor</div>
           <div class="tot-value" id="tot-40-pct">0%</div>
         </div>
         <div class="container-visual container-40-visual" aria-hidden="true">
@@ -289,10 +291,13 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     <button class="filter-btn" data-filter="reg">Regulares (163)</button>
     <button class="filter-btn cat-disc" data-filter="disc">Discontinuadas (11)</button>
     <button class="filter-btn cat-pedido" data-filter="pedido">En pedido (0)</button>
-    <div class="stock-toggle" title="Filtrar por disponibilidad">
-      <button class="stock-btn active" data-stock="all" type="button">Stock: todos</button>
-      <button class="stock-btn" data-stock="available" type="button">Disponibles</button>
-      <button class="stock-btn" data-stock="unavailable" type="button">Indisponibles</button>
+    <div class="stock-box" title="Filtrar por estoque">
+      <span class="stock-title">Estoque</span>
+      <div class="stock-toggle">
+        <button class="stock-btn active" data-stock="all" type="button">Todos</button>
+        <button class="stock-btn" data-stock="available" type="button">Disponível</button>
+        <button class="stock-btn" data-stock="unavailable" type="button">Indisponível</button>
+      </div>
     </div>
     <div class="view-toggle">
       <button data-view="cards" class="active" title="Vista de tarjetas">▦ Cards</button>
