@@ -48,8 +48,8 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .totales{background:#142a40;border-top:1px solid rgba(255,255,255,.08);padding:6px 24px}
 .totales-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .tot-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 8px}
-.tot-card.container-card{display:grid;grid-template-columns:1fr minmax(92px,126px);align-items:center;gap:8px;min-height:68px;background:linear-gradient(135deg,rgba(46,153,210,.18),rgba(255,255,255,.045));border-color:rgba(114,199,240,.28)}
-.container-visual{height:46px;position:relative;border-radius:8px;overflow:visible;filter:drop-shadow(0 12px 16px rgba(0,0,0,.24))}
+.tot-card.container-card{display:grid;grid-template-columns:minmax(72px,.75fr) minmax(92px,126px);align-items:center;gap:8px;min-height:56px;background:linear-gradient(135deg,rgba(46,153,210,.18),rgba(255,255,255,.045));border-color:rgba(114,199,240,.28)}
+.container-visual{height:42px;position:relative;border-radius:8px;overflow:visible;filter:drop-shadow(0 12px 16px rgba(0,0,0,.24))}
 .container-visual::before{content:"";position:absolute;left:8%;right:8%;bottom:2px;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(46,153,210,.38),rgba(46,153,210,0) 70%);filter:blur(4px)}
 .container-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none}
 .container-20-visual .container-img{left:auto;right:0;width:50%}
@@ -61,16 +61,11 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .container-fill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 2px,transparent 2px 16px)}
 .container-fill.warn{filter:saturate(1.15) brightness(1.12)}
 .container-fill.over{filter:saturate(1.35) brightness(1.16)}
-.container-card .bar{background:rgba(255,255,255,.16)}
 .tot-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5);font-weight:600}
 .tot-value{font-size:1.05rem;font-weight:700;color:#fff;margin-top:1px;font-variant-numeric:tabular-nums}
 .container-card .tot-value{font-size:.9rem}
 .tot-sub{font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px;font-variant-numeric:tabular-nums}
-.bar{height:4px;background:rgba(255,255,255,.1);border-radius:3px;margin-top:4px;overflow:hidden;position:relative}
-.bar-fill{height:100%;background:var(--azul-claro);transition:width .25s,background .25s;border-radius:3px}
-.bar-fill.warn{background:var(--ambar)}
-.bar-fill.over{background:var(--rojo)}
-@media(max-width:700px){.totales{padding:5px 12px}.totales-inner{grid-template-columns:repeat(2,1fr);gap:6px}.tot-card{padding:5px 7px}.tot-card.container-card{grid-template-columns:1fr;gap:4px;min-height:auto}.container-visual{height:34px}.container-card .tot-value{font-size:.82rem}}
+@media(max-width:700px){.totales{padding:5px 12px}.totales-inner{grid-template-columns:repeat(2,1fr);gap:6px}.tot-card{padding:5px 7px}.tot-card.container-card{grid-template-columns:minmax(54px,.7fr) minmax(72px,1fr);gap:4px;min-height:auto}.container-visual{height:32px}.container-card .tot-value{font-size:.78rem}}
 
 .disclaimer{background:#fff8e1;border-bottom:1px solid #f0e0a0;padding:8px 24px;font-size:.78rem;color:#6d5a00;text-align:center}
 .disclaimer-inner{max-width:1400px;margin:0 auto}
@@ -108,32 +103,32 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .grid.cols-3{gap:10px}
 .grid.cols-3 .card-body{padding:7px 8px;gap:4px}
 .grid.cols-3 .card-isbn{font-size:.54rem;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.grid.cols-3 .card-desc{display:block;font-size:.62rem;line-height:1.18;min-height:0;-webkit-line-clamp:unset;overflow:visible}
+.grid.cols-3 .card-desc{display:block;font-size:.58rem;line-height:1.16;min-height:0;-webkit-line-clamp:unset;overflow:visible}
 .grid.cols-3 .card-meta{gap:3px;font-size:.58rem;padding-top:4px}
 .grid.cols-3 .meta-label{font-size:.5rem;letter-spacing:.1px}
 .grid.cols-3 .cost-label{font-size:.54rem}
 .grid.cols-3 .cost-value{font-size:.78rem}
-.grid.cols-3 .qty-row{gap:3px;margin-top:4px;padding-top:4px;flex-wrap:wrap}
-.grid.cols-3 .qty-label{font-size:.62rem;flex-basis:100%}
-.grid.cols-3 .qty-btn{width:22px;height:22px;font-size:.8rem}
-.grid.cols-3 .qty-input{width:42px;padding:3px 4px;font-size:.74rem}
+.grid.cols-3 .qty-row{gap:2px;margin-top:4px;padding-top:4px;flex-wrap:nowrap}
+.grid.cols-3 .qty-label{font-size:.58rem;flex:0 0 auto}
+.grid.cols-3 .qty-btn{width:18px;height:20px;font-size:.72rem;padding:0}
+.grid.cols-3 .qty-input{width:30px;padding:2px 2px;font-size:.62rem}
 .grid.cols-3 .qty-totales{font-size:.56rem;flex-direction:column;gap:1px}
-@media(max-width:700px){.grid.cols-3 .card-status{font-size:.52rem;padding:2px 5px}.grid.cols-3 .card-img .placeholder{font-size:1.6rem}.cols-control{gap:6px}}
+@media(max-width:700px){.grid.cols-3 .card-status{font-size:.5rem;padding:2px 5px}.grid.cols-3 .card-img .placeholder{font-size:1.6rem}.cols-control{gap:6px}}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--borda);overflow:hidden;display:flex;flex-direction:column;position:relative;transition:transform .15s,box-shadow .15s,border-color .15s}
 .card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
 .card.has-qty{border-color:var(--laranja);box-shadow:0 0 0 2px rgba(232,93,4,.15)}
 .card.disc{border-color:#fca5a5;background:#fef2f2}
 .card.disc .card-desc{color:var(--rojo)}
-.card-img{width:100%;aspect-ratio:3/4;background:#f0ede8;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;position:relative}
+.card-img{width:100%;aspect-ratio:3/4;background:#f0ede8;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;position:relative;padding-top:24px}
 .card-img img{width:100%;height:100%;object-fit:contain}
 .card-img .placeholder{font-size:2.5rem;color:#bbb;display:none}
-.card-status{position:absolute;top:8px;left:8px;padding:2px 8px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border-radius:4px;color:#fff}
+.card-status{position:absolute;top:0;left:0;right:0;padding:3px 8px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#fff;text-align:center;z-index:2}
 .card-status.lanz{background:var(--verde)}
 .card-status.reg{background:#64748b}
 .card-status.disc{background:var(--rojo)}
 .card-body{padding:10px 12px;flex:1;display:flex;flex-direction:column;gap:6px}
 .card-isbn{font-size:.65rem;color:var(--texto-claro);font-variant-numeric:tabular-nums;font-family:'Courier New',monospace}
-.card-desc{font-size:.78rem;font-weight:600;color:var(--marinho);line-height:1.3;cursor:pointer;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:3em}
+.card-desc{font-size:.74rem;font-weight:600;color:var(--marinho);line-height:1.3;cursor:pointer;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:3em}
 .card-desc:hover{color:var(--azul)}
 .card-meta{display:grid;grid-template-columns:1fr;gap:4px;font-size:.7rem;margin-top:auto;padding-top:6px;border-top:1px dashed var(--borda)}
 .meta-row{display:flex;align-items:baseline;justify-content:space-between;gap:6px}
@@ -251,7 +246,6 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
         <div>
           <div class="tot-label">Contenedor 20'</div>
           <div class="tot-value" id="tot-20-pct">0%</div>
-          <div class="bar"><div class="bar-fill" id="bar-20" style="width:0%"></div></div>
         </div>
         <div class="container-visual container-20-visual" aria-hidden="true">
           <img class="container-img" src="assets/container-20.png" alt="">
@@ -262,7 +256,6 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
         <div>
           <div class="tot-label">Contenedor 40'</div>
           <div class="tot-value" id="tot-40-pct">0%</div>
-          <div class="bar"><div class="bar-fill" id="bar-40" style="width:0%"></div></div>
         </div>
         <div class="container-visual container-40-visual" aria-hidden="true">
           <img class="container-img" src="assets/container-40.png" alt="">
@@ -274,7 +267,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
         <div class="tot-value" id="tot-costo">$0.00</div>
       </div>
       <div class="tot-card">
-        <div class="tot-label">Cantidad Total</div>
+        <div class="tot-label">Pedido Total</div>
         <div class="tot-value" id="tot-cantidad">0 un.</div>
       </div>
     </div>
@@ -284,7 +277,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <div class="disclaimer">
   <div class="disclaimer-inner">
     <span class="rojo">Biblias en rojo: precio especial/discontinuadas.</span>
-    <span>Generado: 15/05/2026 10:58</span>
+    <span>Actualizado: 15/05/2026 10:58</span>
   </div>
 </div>
 
@@ -333,7 +326,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <button class="btt" id="btt" onclick="window.scrollTo({top:0})" title="Volver arriba">↑</button>
 
 <footer class="footer">
-  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 15/05/2026 10:58<br>
+  Sociedad Bíblica del Brasil — Inventario para Exportación · Actualizado: 15/05/2026 10:58<br>
   <small>Tabla informativa. Valores sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
@@ -502,7 +495,7 @@ function cardHtml(p){
       <div class="card-isbn">${p.e}</div>
       <div class="card-desc" onclick="openModal('${p.e}')" title="${p.d.replace(/"/g,'&quot;')}">${p.d}</div>
       <div class="card-meta">
-        <div class="meta-row"><span class="meta-label">Cant. por cartón:</span><span class="meta-value">${p.q} un.</span></div>
+        <div class="meta-row"><span class="meta-label">Cant/Cartón:</span><span class="meta-value">${p.q}</span></div>
         <div class="meta-row"><span class="meta-label">Disponibles:</span><span class="meta-value${invCls}">${fmtInt.format(p.i)}</span></div>
       </div>
       <div class="card-cost">
@@ -510,7 +503,7 @@ function cardHtml(p){
         <span class="cost-value">${fmtUSD.format(p.c)}</span>
       </div>
       <div class="qty-row">
-        <span class="qty-label">Unidades:</span>
+        <span class="qty-label">Pedido:</span>
         <button class="qty-btn" data-act="dec" data-ean="${p.e}" type="button">−</button>
         <input class="qty-input" type="number" min="0" step="1" data-ean="${p.e}" value="${un}">
         <button class="qty-btn" data-act="inc" data-ean="${p.e}" type="button">+</button>
@@ -717,8 +710,6 @@ function updateAllTotales(){
   set('tot-40-pct', fmt.format(Math.min(pct40, 999)) + '%');
   set('tot-costo', fmtUSD.format(totalCosto));
   set('tot-cantidad', fmtInt.format(totalUn) + ' un.');
-  const bar20 = document.getElementById('bar-20');
-  const bar40 = document.getElementById('bar-40');
   const fill20 = document.getElementById('container-20-fill');
   const fill40 = document.getElementById('container-40-fill');
   const setFill = (el, pct, scale = 1) => {
@@ -726,14 +717,6 @@ function updateAllTotales(){
     el.style.width = Math.min(pct, 100) * scale + '%';
     el.className = 'container-fill' + (pct >= 100 ? ' over' : pct >= 90 ? ' warn' : '');
   };
-  if (bar20){
-    bar20.style.width = Math.min(pct20, 100) + '%';
-    bar20.className = 'bar-fill' + (pct20 >= 100 ? ' over' : pct20 >= 90 ? ' warn' : '');
-  }
-  if (bar40){
-    bar40.style.width = Math.min(pct40, 100) + '%';
-    bar40.className = 'bar-fill' + (pct40 >= 100 ? ' over' : pct40 >= 90 ? ' warn' : '');
-  }
   setFill(fill20, pct20, 0.5);
   setFill(fill40, pct40, 0.9);
   const fab = document.getElementById('fab-export');
