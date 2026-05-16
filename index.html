@@ -108,7 +108,7 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .grid.cols-3{gap:10px}
 .grid.cols-3 .card-body{padding:7px 8px;gap:4px}
 .grid.cols-3 .card-isbn{font-size:.54rem;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.grid.cols-3 .card-desc{font-size:.66rem;line-height:1.2;min-height:2.4em;-webkit-line-clamp:2}
+.grid.cols-3 .card-desc{display:block;font-size:.62rem;line-height:1.18;min-height:0;-webkit-line-clamp:unset;overflow:visible}
 .grid.cols-3 .card-meta{gap:3px;font-size:.58rem;padding-top:4px}
 .grid.cols-3 .meta-label{font-size:.5rem;letter-spacing:.1px}
 .grid.cols-3 .cost-label{font-size:.54rem}
@@ -508,7 +508,7 @@ function cardHtml(p){
         <div class="meta-row"><span class="meta-label">Vol/cart.</span><span class="meta-value">${fmt.format(p.v*1000)} L</span></div>
       </div>
       <div class="card-cost">
-        <span class="cost-label">Costo/copia</span>
+        <span class="cost-label">Costo:</span>
         <span class="cost-value">${fmtUSD.format(p.c)}</span>
       </div>
       <div class="qty-row">
@@ -778,7 +778,7 @@ function openModal(ean){
     <div class="row"><span>Cantidad por cartón</span><b>${p.q} un.</b></div>
     <div class="row"><span>Peso por cartón</span><b>${fmt.format(p.p)} kg</b></div>
     <div class="row"><span>Volumen por cartón</span><b>${fmt.format(p.v*1000)} L (${fmt.format(p.v)} m³)</b></div>
-    <div class="row"><span>Costo/copia</span><b>${fmtUSD.format(p.c)}</b></div>
+    <div class="row"><span>Costo</span><b>${fmtUSD.format(p.c)}</b></div>
     <div class="row"><span>Costo/cartón</span><b>${fmtUSD.format(p.c*p.q)}</b></div>
     <div class="row"><span>Inventario disponible</span><b style="color:${p.i===0?'#dc2626':'inherit'}">${fmtInt.format(p.i)} un.</b></div>
   `;
