@@ -76,13 +76,13 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .search-input{flex:1;min-width:200px;padding:8px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.1);color:#fff;font-size:.9rem;outline:none}
 .search-input::placeholder{color:rgba(255,255,255,.45)}
 .search-input:focus{border-color:var(--azul-claro);background:rgba(255,255,255,.15)}
-.filter-btn{padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.8);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap}
-.filter-btn:hover{background:rgba(255,255,255,.12);color:#fff}
-.filter-btn.active{background:var(--azul-claro);border-color:var(--azul-claro);color:#fff;font-weight:700}
+.filter-btn,.stock-btn{padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.8);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+.filter-btn:hover,.stock-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.filter-btn.active,.stock-btn.active{background:var(--azul-claro);border-color:var(--azul-claro);color:#fff;font-weight:700}
 .filter-btn.cat-lanz.active{background:var(--verde);border-color:var(--verde)}
 .filter-btn.cat-disc.active{background:var(--rojo);border-color:var(--rojo)}
 .filter-btn.cat-pedido.active{background:var(--laranja);border-color:var(--laranja)}
-.filter-sep{width:1px;height:20px;background:rgba(255,255,255,.15)}
+.stock-toggle{display:inline-flex;gap:6px;flex-wrap:wrap}
 
 .view-toggle,.cols-toggle{display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
 .view-toggle button,.cols-toggle button{padding:6px 12px;background:transparent;color:rgba(255,255,255,.75);border:none;font-size:.78rem;cursor:pointer;font-family:inherit}
@@ -91,7 +91,7 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .cols-control{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .cols-label{color:rgba(255,255,255,.65);font-size:.78rem}
 
-.main{max-width:1400px;margin:0 auto;padding:20px 24px 60px}
+.main{max-width:1400px;margin:0 auto;padding:20px 14px 60px}
 .section-title{font-size:1.4rem;font-weight:700;color:var(--marinho);margin:24px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--azul-claro);display:flex;align-items:center;gap:10px}
 .section-title .badge{font-size:.72rem;background:var(--azul-bg);color:var(--azul);padding:3px 10px;border-radius:12px;font-weight:600}
 
@@ -99,8 +99,8 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .grid.cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
 .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media(max-width:700px){.grid{gap:10px}}
-.grid.cols-3{gap:10px}
+@media(max-width:700px){.main{padding-left:8px;padding-right:8px}.grid{gap:8px}}
+.grid.cols-3{gap:8px}
 .grid.cols-3 .card-body{padding:7px 8px;gap:4px}
 .grid.cols-3 .card-isbn{font-size:.54rem;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .grid.cols-3 .card-desc{display:block;font-size:.58rem;line-height:1.16;min-height:0;-webkit-line-clamp:unset;overflow:visible}
@@ -174,10 +174,10 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .tabla-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--borda);overflow:auto;margin-top:14px;box-shadow:var(--shadow)}
 table.inv{width:100%;border-collapse:collapse;font-size:.78rem;font-variant-numeric:tabular-nums}
 table.inv thead{background:var(--marinho);color:#fff;position:sticky;top:0;z-index:5}
-table.inv th{padding:8px 10px;text-align:left;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
-table.inv th.num{text-align:right}
-table.inv td{padding:6px 10px;border-bottom:1px solid var(--borda);vertical-align:middle}
-table.inv td.num{text-align:right;font-variant-numeric:tabular-nums}
+table.inv th{padding:8px 10px;text-align:center;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
+table.inv th.num{text-align:center}
+table.inv td{padding:6px 10px;border-bottom:1px solid var(--borda);vertical-align:middle;text-align:center}
+table.inv td.num{text-align:center;font-variant-numeric:tabular-nums}
 table.inv tbody tr:hover{background:#fafafa}
 table.inv tbody tr.has-qty{background:#fff5e6}
 table.inv tbody tr.has-qty:hover{background:#ffeacc}
@@ -192,7 +192,7 @@ table.inv tbody tr.disc.has-qty{background:#ffe4d6}
 .t-thumb .placeholder{font-size:1.2rem;color:#bbb;display:none}
 .t-thumb-cell:hover .t-thumb{box-shadow:0 0 0 2px var(--azul-claro)}
 .t-isbn{font-family:'Courier New',monospace;font-size:.72rem;color:var(--texto-claro);white-space:nowrap}
-.t-desc{font-weight:500;max-width:340px;line-height:1.35;cursor:pointer}
+.t-desc{font-weight:500;max-width:340px;line-height:1.35;cursor:pointer;text-align:center}
 .t-desc:hover{color:var(--azul)}
 .t-status{padding:2px 8px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;border-radius:4px;color:#fff;white-space:nowrap;display:inline-block}
 .t-status.lanz{background:var(--verde)}
@@ -244,7 +244,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     <div class="totales-inner">
       <div class="tot-card container-card">
         <div>
-          <div class="tot-label">Contenedor 20'</div>
+          <div class="tot-label">20' Contenedor</div>
           <div class="tot-value" id="tot-20-pct">0%</div>
         </div>
         <div class="container-visual container-20-visual" aria-hidden="true">
@@ -254,7 +254,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
       </div>
       <div class="tot-card container-card">
         <div>
-          <div class="tot-label">Contenedor 40'</div>
+          <div class="tot-label">40' Contenedor</div>
           <div class="tot-value" id="tot-40-pct">0%</div>
         </div>
         <div class="container-visual container-40-visual" aria-hidden="true">
@@ -277,7 +277,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <div class="disclaimer">
   <div class="disclaimer-inner">
     <span class="rojo">Biblias en rojo: precio especial/discontinuadas.</span>
-    <span>Actualizado: 15/05/2026 10:58</span>
+    <span>Actualizado: 15/05/2026</span>
   </div>
 </div>
 
@@ -288,9 +288,12 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     <button class="filter-btn cat-lanz" data-filter="lanz">Lanzamientos (69)</button>
     <button class="filter-btn" data-filter="reg">Regulares (163)</button>
     <button class="filter-btn cat-disc" data-filter="disc">Discontinuadas (11)</button>
-    <span class="filter-sep"></span>
     <button class="filter-btn cat-pedido" data-filter="pedido">En pedido (0)</button>
-    <span class="filter-sep"></span>
+    <div class="stock-toggle" title="Filtrar por disponibilidad">
+      <button class="stock-btn active" data-stock="all" type="button">Stock: todos</button>
+      <button class="stock-btn" data-stock="available" type="button">Disponibles</button>
+      <button class="stock-btn" data-stock="unavailable" type="button">Indisponibles</button>
+    </div>
     <div class="view-toggle">
       <button data-view="cards" class="active" title="Vista de tarjetas">▦ Cards</button>
       <button data-view="tabla" title="Vista de tabla">☰ Tabla</button>
@@ -326,7 +329,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <button class="btt" id="btt" onclick="window.scrollTo({top:0})" title="Volver arriba">↑</button>
 
 <footer class="footer">
-  Sociedad Bíblica del Brasil — Inventario para Exportación · Actualizado: 15/05/2026 10:58<br>
+  Sociedad Bíblica del Brasil — Inventario para Exportación · Actualizado: 15/05/2026<br>
   <small>Tabla informativa. Valores sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
@@ -414,6 +417,7 @@ const DATA = [{"e":"9798886391381","d":"DHH043:AZ: BIB ESP DIOS HABLATAPA DURA A
 let pedido = {};
 try { pedido = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ pedido = {}; }
 let activeFilter = 'all';
+let stockFilter = 'all';
 let searchTerm = '';
 let viewMode = localStorage.getItem('sbb_view') || 'cards';
 let cardCols = Number(localStorage.getItem('sbb_cols') || 3);
@@ -439,6 +443,8 @@ function filteredData(){
     if (activeFilter === 'reg' && p.s !== 'Regular') return false;
     if (activeFilter === 'disc' && p.s !== 'Discontinuada') return false;
     if (activeFilter === 'pedido' && !(pedido[p.e] > 0)) return false;
+    if (stockFilter === 'available' && p.i <= 0) return false;
+    if (stockFilter === 'unavailable' && p.i > 0) return false;
     if (term){
       const hay = (p.e + ' ' + p.d + ' ' + p.t).toLowerCase();
       if (!hay.includes(term)) return false;
@@ -578,7 +584,7 @@ function renderTabla(){
     </tr></thead>
     <tbody>${rows}</tbody>
     <tfoot><tr>
-      <td colspan="7" style="text-align:right">TOTAL del filtro actual:</td>
+      <td colspan="7">TOTAL del filtro actual:</td>
       <td class="num">${fmtInt.format(fU)}</td>
       <td class="num">${fmt.format(fK)}</td>
       <td class="num">${fmtUSD.format(fC)}</td>
@@ -803,6 +809,15 @@ function initApp(){
       document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
       b.classList.add('active');
       activeFilter = b.dataset.filter;
+      sortBy = null;
+      render();
+    };
+  });
+  document.querySelectorAll('.stock-btn').forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll('.stock-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      stockFilter = b.dataset.stock;
       sortBy = null;
       render();
     };
