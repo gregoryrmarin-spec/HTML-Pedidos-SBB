@@ -89,16 +89,21 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .filter-btn.cat-pedido.active{background:var(--laranja);border-color:var(--laranja)}
 .filter-sep{width:1px;height:20px;background:rgba(255,255,255,.15)}
 
-.view-toggle{display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
-.view-toggle button{padding:6px 12px;background:transparent;color:rgba(255,255,255,.75);border:none;font-size:.78rem;cursor:pointer;font-family:inherit}
-.view-toggle button.active{background:var(--azul-claro);color:#fff;font-weight:700}
-.view-toggle button:hover:not(.active){background:rgba(255,255,255,.1);color:#fff}
+.view-toggle,.cols-toggle{display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
+.view-toggle button,.cols-toggle button{padding:6px 12px;background:transparent;color:rgba(255,255,255,.75);border:none;font-size:.78rem;cursor:pointer;font-family:inherit}
+.view-toggle button.active,.cols-toggle button.active{background:var(--azul-claro);color:#fff;font-weight:700}
+.view-toggle button:hover:not(.active),.cols-toggle button:hover:not(.active){background:rgba(255,255,255,.1);color:#fff}
+.cols-label{color:rgba(255,255,255,.65);font-size:.78rem}
 
 .main{max-width:1400px;margin:0 auto;padding:20px 24px 60px}
 .section-title{font-size:1.4rem;font-weight:700;color:var(--marinho);margin:24px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--azul-claro);display:flex;align-items:center;gap:10px}
 .section-title .badge{font-size:.72rem;background:var(--azul-bg);color:var(--azul);padding:3px 10px;border-radius:12px;font-weight:600}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:8px}
+.grid.cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
+.grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:700px){.grid{gap:10px}}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--borda);overflow:hidden;display:flex;flex-direction:column;position:relative;transition:transform .15s,box-shadow .15s,border-color .15s}
 .card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
 .card.has-qty{border-color:var(--laranja);box-shadow:0 0 0 2px rgba(232,93,4,.15)}
@@ -219,11 +224,10 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
   <div class="header-inner">
     <div class="header-brand">
       <img class="sbb-logo" src="assets/sbb-logo.png" alt="Sociedade Bíblica do Brasil">
-      <h1>Inventario SBB <span>— Pedido de Exportación</span></h1>
+      <h1>Inventario SBB</h1>
     </div>
     <div style="font-size:.78rem;opacity:.75;text-align:right">
       <div>243 SKUs · <b style="color:var(--azul-claro)">69</b> lanz · 163 reg · <span style="color:#fca5a5">11 disc</span></div>
-      <div style="font-size:.7rem;opacity:.7">Generado: 15/05/2026 10:58</div>
     </div>
   </div>
   <div class="totales">
@@ -251,7 +255,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
         </div>
       </div>
       <div class="tot-card">
-        <div class="tot-label">Costo EXW Total</div>
+        <div class="tot-label">Costo Total</div>
         <div class="tot-value" id="tot-costo">$0.00</div>
       </div>
       <div class="tot-card">
@@ -265,7 +269,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <div class="disclaimer">
   <div class="disclaimer-inner">
     <span class="rojo">Biblias en rojo: precio especial/discontinuadas.</span>
-    Costos EXW en USD.
+    <span>Generado: 15/05/2026 10:58</span>
   </div>
 </div>
 
@@ -282,6 +286,12 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     <div class="view-toggle">
       <button data-view="cards" class="active" title="Vista de tarjetas">▦ Cards</button>
       <button data-view="tabla" title="Vista de tabla">☰ Tabla</button>
+    </div>
+    <span class="cols-label">Columnas</span>
+    <div class="cols-toggle" title="Elegir cuántas columnas ver">
+      <button data-cols="1" type="button">1</button>
+      <button data-cols="2" type="button">2</button>
+      <button data-cols="3" type="button">3</button>
     </div>
   </div>
 </div>
@@ -307,7 +317,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 
 <footer class="footer">
   Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 15/05/2026 10:58<br>
-  <small>Tabla informativa. Precios EXW en USD, sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
+  <small>Tabla informativa. Valores sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
 <script>
@@ -396,6 +406,8 @@ try { pedido = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e)
 let activeFilter = 'all';
 let searchTerm = '';
 let viewMode = localStorage.getItem('sbb_view') || 'cards';
+let cardCols = Number(localStorage.getItem('sbb_cols') || 3);
+if (![1,2,3].includes(cardCols)) cardCols = 3;
 let sortBy = null;
 
 function calcLine(p, un){
@@ -445,7 +457,7 @@ function renderCards(){
   const html = [];
   for (const g of groupOrder){
     if (!groups[g]) continue;
-    html.push(`<h2 class="section-title">${groupLabel[g]} <span class="badge">${groups[g].length}</span></h2><div class="grid">`);
+    html.push(`<h2 class="section-title">${groupLabel[g]} <span class="badge">${groups[g].length}</span></h2><div class="grid cols-${cardCols}">`);
     for (const p of groups[g]) html.push(cardHtml(p));
     html.push('</div>');
   }
@@ -479,7 +491,7 @@ function cardHtml(p){
         <div class="meta-row"><span class="meta-label">Vol/cart.</span><span class="meta-value">${fmt.format(p.v*1000)} L</span></div>
       </div>
       <div class="card-cost">
-        <span class="cost-label">Costo EXW/copia</span>
+        <span class="cost-label">Costo/copia</span>
         <span class="cost-value">${fmtUSD.format(p.c)}</span>
       </div>
       <div class="qty-row">
@@ -556,7 +568,7 @@ function renderTabla(){
       <th data-sort="q" class="sortable num">Un./cart${arrow('q')}</th>
       <th data-sort="p" class="sortable num">Peso/cart kg${arrow('p')}</th>
       <th data-sort="v" class="sortable num">Vol/cart L${arrow('v')}</th>
-      <th data-sort="c" class="sortable num">Costo USD${arrow('c')}</th>
+      <th data-sort="c" class="sortable num">Costo${arrow('c')}</th>
       <th data-sort="i" class="sortable num">Inventario${arrow('i')}</th>
       <th data-sort="qty" class="sortable num">Unidades${arrow('qty')}</th>
       <th class="num">Cartones</th>
@@ -749,8 +761,8 @@ function openModal(ean){
     <div class="row"><span>Cantidad por cartón</span><b>${p.q} un.</b></div>
     <div class="row"><span>Peso por cartón</span><b>${fmt.format(p.p)} kg</b></div>
     <div class="row"><span>Volumen por cartón</span><b>${fmt.format(p.v*1000)} L (${fmt.format(p.v)} m³)</b></div>
-    <div class="row"><span>Costo EXW/copia</span><b>${fmtUSD.format(p.c)}</b></div>
-    <div class="row"><span>Costo EXW/cartón</span><b>${fmtUSD.format(p.c*p.q)}</b></div>
+    <div class="row"><span>Costo/copia</span><b>${fmtUSD.format(p.c)}</b></div>
+    <div class="row"><span>Costo/cartón</span><b>${fmtUSD.format(p.c*p.q)}</b></div>
     <div class="row"><span>Inventario disponible</span><b style="color:${p.i===0?'#dc2626':'inherit'}">${fmtInt.format(p.i)} un.</b></div>
   `;
   document.getElementById('modal').classList.add('show');
@@ -758,7 +770,7 @@ function openModal(ean){
 function closeModal(){ document.getElementById('modal').classList.remove('show'); }
 
 function exportarPedido(){
-  const lines = [['ISBN','Descripción','Status','Unidades','Cartones','Cartón cerrado','Peso (kg)','Volumen (m³)','Costo EXW (USD)']];
+  const lines = [['ISBN','Descripción','Status','Unidades','Cartones','Cartón cerrado','Peso (kg)','Volumen (m³)','Costo']];
   let totCart=0, totUn=0, totPeso=0, totVol=0, totCosto=0;
   for (const ean in pedido){
     const un = pedido[ean]; if (!un) continue;
@@ -792,8 +804,16 @@ function setView(mode){
   render();
 }
 
+function setColumns(cols){
+  cardCols = Number(cols);
+  localStorage.setItem('sbb_cols', String(cardCols));
+  document.querySelectorAll('.cols-toggle button').forEach(b => b.classList.toggle('active', Number(b.dataset.cols) === cardCols));
+  render();
+}
+
 function initApp(){
   document.querySelectorAll('.view-toggle button').forEach(b => b.classList.toggle('active', b.dataset.view === viewMode));
+  document.querySelectorAll('.cols-toggle button').forEach(b => b.classList.toggle('active', Number(b.dataset.cols) === cardCols));
   render();
   document.getElementById('search').addEventListener('input', e => { searchTerm = e.target.value; render(); });
   document.querySelectorAll('.filter-btn').forEach(b => {
@@ -807,6 +827,9 @@ function initApp(){
   });
   document.querySelectorAll('.view-toggle button').forEach(b => {
     b.onclick = () => setView(b.dataset.view);
+  });
+  document.querySelectorAll('.cols-toggle button').forEach(b => {
+    b.onclick = () => setColumns(b.dataset.cols);
   });
   window.addEventListener('scroll', () => {
     const btt = document.getElementById('btt');
