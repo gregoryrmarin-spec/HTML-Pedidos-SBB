@@ -93,6 +93,7 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .view-toggle button,.cols-toggle button{padding:6px 12px;background:transparent;color:rgba(255,255,255,.75);border:none;font-size:.78rem;cursor:pointer;font-family:inherit}
 .view-toggle button.active,.cols-toggle button.active{background:var(--azul-claro);color:#fff;font-weight:700}
 .view-toggle button:hover:not(.active),.cols-toggle button:hover:not(.active){background:rgba(255,255,255,.1);color:#fff}
+.cols-control{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .cols-label{color:rgba(255,255,255,.65);font-size:.78rem}
 
 .main{max-width:1400px;margin:0 auto;padding:20px 24px 60px}
@@ -104,6 +105,20 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:700px){.grid{gap:10px}}
+.grid.cols-3{gap:10px}
+.grid.cols-3 .card-body{padding:7px 8px;gap:4px}
+.grid.cols-3 .card-isbn{font-size:.54rem;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.grid.cols-3 .card-desc{font-size:.66rem;line-height:1.2;min-height:2.4em;-webkit-line-clamp:2}
+.grid.cols-3 .card-meta{gap:3px;font-size:.58rem;padding-top:4px}
+.grid.cols-3 .meta-label{font-size:.5rem;letter-spacing:.1px}
+.grid.cols-3 .cost-label{font-size:.54rem}
+.grid.cols-3 .cost-value{font-size:.78rem}
+.grid.cols-3 .qty-row{gap:3px;margin-top:4px;padding-top:4px;flex-wrap:wrap}
+.grid.cols-3 .qty-label{font-size:.62rem;flex-basis:100%}
+.grid.cols-3 .qty-btn{width:22px;height:22px;font-size:.8rem}
+.grid.cols-3 .qty-input{width:42px;padding:3px 4px;font-size:.74rem}
+.grid.cols-3 .qty-totales{font-size:.56rem;flex-direction:column;gap:1px}
+@media(max-width:700px){.grid.cols-3 .card-meta{grid-template-columns:1fr}.grid.cols-3 .card-status{font-size:.52rem;padding:2px 5px}.grid.cols-3 .card-img .placeholder{font-size:1.6rem}.cols-control{gap:6px}}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--borda);overflow:hidden;display:flex;flex-direction:column;position:relative;transition:transform .15s,box-shadow .15s,border-color .15s}
 .card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
 .card.has-qty{border-color:var(--laranja);box-shadow:0 0 0 2px rgba(232,93,4,.15)}
@@ -287,11 +302,13 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
       <button data-view="cards" class="active" title="Vista de tarjetas">▦ Cards</button>
       <button data-view="tabla" title="Vista de tabla">☰ Tabla</button>
     </div>
-    <span class="cols-label">Columnas</span>
-    <div class="cols-toggle" title="Elegir cuántas columnas ver">
-      <button data-cols="1" type="button">1</button>
-      <button data-cols="2" type="button">2</button>
-      <button data-cols="3" type="button">3</button>
+    <div class="cols-control">
+      <span class="cols-label">Columnas</span>
+      <div class="cols-toggle" title="Elegir cuántas columnas ver">
+        <button data-cols="1" type="button">1</button>
+        <button data-cols="2" type="button">2</button>
+        <button data-cols="3" type="button">3</button>
+      </div>
     </div>
   </div>
 </div>
