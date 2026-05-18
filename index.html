@@ -170,6 +170,9 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .btt.show{display:block}
 
 .tabla-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--borda);overflow:auto;margin-top:14px;box-shadow:var(--shadow)}
+.table-tools{display:flex;justify-content:flex-end;gap:8px;margin:0 0 8px}
+.table-clear-btn{padding:6px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.18);background:var(--laranja);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;transition:filter .15s ease}
+.table-clear-btn:hover{filter:brightness(1.05)}
 table.inv{width:100%;border-collapse:collapse;font-size:.78rem;font-variant-numeric:tabular-nums}
 table.inv thead{background:var(--marinho);color:#fff;position:sticky;top:0;z-index:5}
 table.inv th{padding:8px 10px;text-align:center;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
@@ -181,6 +184,12 @@ table.inv thead tr.filter-row th{padding:6px 8px;background:#10253a}
 .col-filter::placeholder{color:rgba(255,255,255,.45)}
 .col-filter:focus{border-color:var(--azul-claro);background:rgba(255,255,255,.14)}
 .col-filter option{color:#1f2937}
+@media(max-width:700px){
+  .table-tools{margin:0 0 6px}
+  .table-clear-btn{padding:5px 8px;font-size:.66rem;line-height:1.1}
+  table.inv thead tr.filter-row th{padding:3px 4px}
+  .col-filter{padding:2px 4px;font-size:.55rem;border-radius:3px;min-height:26px}
+}
 table.inv tbody tr:hover{background:#fafafa}
 table.inv tbody tr.has-qty{background:#fff5e6}
 table.inv tbody tr.has-qty:hover{background:#ffeacc}
@@ -241,7 +250,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     </div>
     <div style="font-size:.78rem;opacity:.75;text-align:right">
       <div>243 SKUs · <b style="color:var(--azul-claro)">69</b> lanz · 163 reg · <span style="color:#fca5a5">11 disc</span></div>
-      <div style="font-size:.7rem;opacity:.7">Generado: 18/05/2026 08:39</div>
+      <div style="font-size:.7rem;opacity:.7">Generado: 18/05/2026 08:45</div>
     </div>
   </div>
   <div class="totales">
@@ -328,7 +337,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <button class="btt" id="btt" onclick="window.scrollTo({top:0})" title="Volver arriba">↑</button>
 
 <footer class="footer">
-  Sociedad Bíblica del Brasil — Inventario para Exportación · Actualizado: 18/05/2026 08:39<br>
+  Sociedad Bíblica del Brasil — Inventario para Exportación · Actualizado: 18/05/2026 08:45<br>
   <small>Tabla informativa. Valores sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
@@ -457,6 +466,12 @@ function tableStatusFilter(){
     <option value="Regular"${value === 'Regular' ? ' selected' : ''}>Reg</option>
     <option value="Discontinuada"${value === 'Discontinuada' ? ' selected' : ''}>Disc</option>
   </select>`;
+}
+
+function clearTableFilters(){
+  tableFilters = {};
+  localStorage.removeItem('sbb_table_filters');
+  render();
 }
 
 function rowMatchesTableFilters(p, un, l){
@@ -631,7 +646,11 @@ function renderTabla(){
     const l = calcLine(p, un);
     fK += l.cartones; fU += un; fC += l.costo;
   }
-  return `<div class="tabla-wrap"><table class="inv">
+  return `<div class="tabla-wrap">
+    <div class="table-tools">
+      <button class="table-clear-btn" id="clear-table-filters" type="button">Limpar filtros</button>
+    </div>
+    <table class="inv">
     <thead><tr>
       <th></th>
       <th data-sort="e" class="sortable">ISBN${arrow('e')}</th>
@@ -692,6 +711,8 @@ function bindCardEvents(){
 }
 
 function bindTablaEvents(){
+  const clearBtn = document.getElementById('clear-table-filters');
+  if (clearBtn) clearBtn.onclick = clearTableFilters;
   document.querySelectorAll('th.sortable').forEach(th => {
     th.style.cursor = 'pointer';
     th.onclick = () => {
