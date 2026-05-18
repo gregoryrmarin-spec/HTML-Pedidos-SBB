@@ -172,10 +172,15 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .tabla-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--borda);overflow:auto;margin-top:14px;box-shadow:var(--shadow)}
 table.inv{width:100%;border-collapse:collapse;font-size:.78rem;font-variant-numeric:tabular-nums}
 table.inv thead{background:var(--marinho);color:#fff;position:sticky;top:0;z-index:5}
-table.inv th{padding:8px 10px;text-align:left;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
-table.inv th.num{text-align:right}
-table.inv td{padding:6px 10px;border-bottom:1px solid var(--borda);vertical-align:middle}
-table.inv td.num{text-align:right;font-variant-numeric:tabular-nums}
+table.inv th{padding:8px 10px;text-align:center;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
+table.inv th.num{text-align:center}
+table.inv td{padding:6px 10px;border-bottom:1px solid var(--borda);vertical-align:middle;text-align:center}
+table.inv td.num{text-align:center;font-variant-numeric:tabular-nums}
+table.inv thead tr.filter-row th{padding:6px 8px;background:#10253a}
+.col-filter{width:100%;padding:4px 6px;border:1px solid rgba(255,255,255,.16);border-radius:4px;background:rgba(255,255,255,.08);color:#fff;font:inherit;font-size:.65rem;text-align:center;outline:none}
+.col-filter::placeholder{color:rgba(255,255,255,.45)}
+.col-filter:focus{border-color:var(--azul-claro);background:rgba(255,255,255,.14)}
+.col-filter option{color:#1f2937}
 table.inv tbody tr:hover{background:#fafafa}
 table.inv tbody tr.has-qty{background:#fff5e6}
 table.inv tbody tr.has-qty:hover{background:#ffeacc}
@@ -196,7 +201,7 @@ table.inv tbody tr.disc.has-qty{background:#ffe4d6}
 .t-status.lanz{background:var(--verde)}
 .t-status.reg{background:#64748b}
 .t-status.disc{background:var(--rojo)}
-.t-qty-cell{display:flex;align-items:center;gap:3px;justify-content:flex-end}
+.t-qty-cell{display:flex;align-items:center;gap:3px;justify-content:center}
 .t-qty-input{width:54px;padding:3px 4px;text-align:center;border:1px solid var(--borda);border-radius:4px;font-weight:700;font-size:.8rem;font-variant-numeric:tabular-nums;outline:none}
 .t-qty-input:focus{border-color:var(--azul-claro)}
 .t-qty-input::-webkit-outer-spin-button,.t-qty-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
@@ -236,7 +241,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     </div>
     <div style="font-size:.78rem;opacity:.75;text-align:right">
       <div>243 SKUs · <b style="color:var(--azul-claro)">69</b> lanz · 163 reg · <span style="color:#fca5a5">11 disc</span></div>
-      <div style="font-size:.7rem;opacity:.7">Generado: 18/05/2026 08:27</div>
+      <div style="font-size:.7rem;opacity:.7">Generado: 18/05/2026 08:39</div>
     </div>
   </div>
   <div class="totales">
@@ -323,7 +328,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <button class="btt" id="btt" onclick="window.scrollTo({top:0})" title="Volver arriba">↑</button>
 
 <footer class="footer">
-  Sociedad Bíblica del Brasil — Inventario para Exportación · Actualizado: 18/05/2026 08:27<br>
+  Sociedad Bíblica del Brasil — Inventario para Exportación · Actualizado: 18/05/2026 08:39<br>
   <small>Tabla informativa. Valores sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
@@ -417,6 +422,66 @@ let activeFilter = 'all';
 let searchTerm = '';
 let viewMode = localStorage.getItem('sbb_view') || 'cards';
 let sortBy = null;
+let tableFilters = {};
+try {
+  tableFilters = JSON.parse(localStorage.getItem('sbb_table_filters') || '{}');
+} catch(e) {
+  tableFilters = {};
+}
+
+function normText(v){
+  return String(v ?? '').toLowerCase().trim();
+}
+
+function escAttr(v){
+  return String(v ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function saveTableFilters(){
+  localStorage.setItem('sbb_table_filters', JSON.stringify(tableFilters));
+}
+
+function tableTextFilter(col, placeholder){
+  return `<input class="col-filter" data-col="${col}" type="search" placeholder="${placeholder}" value="${escAttr(tableFilters[col] || '')}" autocomplete="off">`;
+}
+
+function tableStatusFilter(){
+  const value = tableFilters.s || '';
+  return `<select class="col-filter" data-col="s">
+    <option value="">Status</option>
+    <option value="Lanzamiento"${value === 'Lanzamiento' ? ' selected' : ''}>Lanz</option>
+    <option value="Regular"${value === 'Regular' ? ' selected' : ''}>Reg</option>
+    <option value="Discontinuada"${value === 'Discontinuada' ? ' selected' : ''}>Disc</option>
+  </select>`;
+}
+
+function rowMatchesTableFilters(p, un, l){
+  const checks = {
+    e: p.e,
+    d: p.d,
+    s: p.s,
+    q: p.q,
+    c: fmtUSD.format(p.c),
+    i: p.i,
+    qty: un,
+    cart: un > 0 ? l.cartones : 0,
+    totcost: un > 0 ? fmtUSD.format(l.costo) : fmtUSD.format(0),
+  };
+  for (const [col, raw] of Object.entries(tableFilters)){
+    const needle = normText(raw);
+    if (!needle) continue;
+    if (col === 's'){
+      if (normText(checks[col]) !== needle) return false;
+      continue;
+    }
+    if (!normText(checks[col]).includes(needle)) return false;
+  }
+  return true;
+}
 
 function calcLine(p, un){
   const cartones = un / p.q;
@@ -495,8 +560,6 @@ function cardHtml(p){
       <div class="card-meta">
         <div class="meta-row"><span class="meta-label">Por cartón</span><span class="meta-value">${p.q} un.</span></div>
         <div class="meta-row"><span class="meta-label">Inventario</span><span class="meta-value${invCls}">${fmtInt.format(p.i)}</span></div>
-        <div class="meta-row"><span class="meta-label">Peso/cart.</span><span class="meta-value">${fmt.format(p.p)} kg</span></div>
-        <div class="meta-row"><span class="meta-label">Vol/cart.</span><span class="meta-value">${fmt.format(p.v*1000)} L</span></div>
       </div>
       <div class="card-cost">
         <span class="cost-label">Costo EXW/copia</span>
@@ -518,6 +581,11 @@ function cardHtml(p){
 
 function renderTabla(){
   let items = filteredData();
+  items = items.filter(p => {
+    const un = pedido[p.e] || 0;
+    const l = calcLine(p, un);
+    return rowMatchesTableFilters(p, un, l);
+  });
   if (sortBy){
     const {col, dir} = sortBy;
     const mul = dir === 'asc' ? 1 : -1;
@@ -546,8 +614,6 @@ function renderTabla(){
       <td class="t-desc" onclick="openModal('${p.e}')" title="${p.d.replace(/"/g,'&quot;')}">${p.d}</td>
       <td><span class="t-status ${stCls}">${stLabel}</span></td>
       <td class="num">${p.q}</td>
-      <td class="num">${fmt.format(p.p)}</td>
-      <td class="num">${fmt.format(p.v*1000)}</td>
       <td class="num t-cost">${fmtUSD.format(p.c)}</td>
       <td class="num${invCls}">${fmtInt.format(p.i)}</td>
       <td class="num"><div class="t-qty-cell">
@@ -556,16 +622,14 @@ function renderTabla(){
         <button class="t-qty-btn" data-act="inc" data-ean="${p.e}" type="button">+</button>
       </div></td>
       <td class="num" data-tot-cart="${p.e}">${cartCell}</td>
-      <td class="num" data-tot-peso="${p.e}">${un>0 ? fmt.format(l.peso) : '—'}</td>
-      <td class="num" data-tot-vol="${p.e}">${un>0 ? fmt.format(l.vol*1000) : '—'}</td>
       <td class="num t-cost" data-tot-cost="${p.e}">${un>0 ? fmtUSD.format(l.costo) : '—'}</td>
     </tr>`;
   }).join('');
-  let fU=0, fP=0, fV=0, fC=0, fK=0;
+  let fU=0, fC=0, fK=0;
   for (const p of items){
     const un = pedido[p.e] || 0; if (!un) continue;
     const l = calcLine(p, un);
-    fK += l.cartones; fU += un; fP += l.peso; fV += l.vol; fC += l.costo;
+    fK += l.cartones; fU += un; fC += l.costo;
   }
   return `<div class="tabla-wrap"><table class="inv">
     <thead><tr>
@@ -574,23 +638,28 @@ function renderTabla(){
       <th data-sort="d" class="sortable">Descripción${arrow('d')}</th>
       <th data-sort="s" class="sortable">Status${arrow('s')}</th>
       <th data-sort="q" class="sortable num">Un./cart${arrow('q')}</th>
-      <th data-sort="p" class="sortable num">Peso/cart kg${arrow('p')}</th>
-      <th data-sort="v" class="sortable num">Vol/cart L${arrow('v')}</th>
       <th data-sort="c" class="sortable num">Costo USD${arrow('c')}</th>
       <th data-sort="i" class="sortable num">Inventario${arrow('i')}</th>
       <th data-sort="qty" class="sortable num">Unidades${arrow('qty')}</th>
       <th class="num">Cartones</th>
-      <th class="num">Peso kg</th>
-      <th class="num">Vol L</th>
       <th class="num">Costo Total</th>
+    </tr><tr class="filter-row">
+      <th></th>
+      <th>${tableTextFilter('e', 'ISBN')}</th>
+      <th>${tableTextFilter('d', 'Descripción')}</th>
+      <th>${tableStatusFilter()}</th>
+      <th>${tableTextFilter('q', 'Un/cart')}</th>
+      <th>${tableTextFilter('c', 'Costo')}</th>
+      <th>${tableTextFilter('i', 'Inventario')}</th>
+      <th>${tableTextFilter('qty', 'Unidades')}</th>
+      <th>${tableTextFilter('cart', 'Cartones')}</th>
+      <th>${tableTextFilter('totcost', 'Total')}</th>
     </tr></thead>
     <tbody>${rows}</tbody>
     <tfoot><tr>
-      <td colspan="9" style="text-align:right">TOTAL del filtro actual:</td>
+      <td colspan="7" style="text-align:right">TOTAL del filtro actual:</td>
       <td class="num">${fmtInt.format(fU)}</td>
       <td class="num">${fmt.format(fK)}</td>
-      <td class="num">${fmt.format(fP)}</td>
-      <td class="num">${fmt.format(fV*1000)}</td>
       <td class="num">${fmtUSD.format(fC)}</td>
     </tr></tfoot>
   </table></div>`;
@@ -632,6 +701,24 @@ function bindTablaEvents(){
       render();
     };
   });
+  document.querySelectorAll('.col-filter').forEach(el => {
+    const apply = () => {
+      const col = el.dataset.col;
+      const val = el.value.trim();
+      if (val) tableFilters[col] = val;
+      else delete tableFilters[col];
+      saveTableFilters();
+      render();
+    };
+    if (el.tagName === 'SELECT') el.onchange = apply;
+    else el.oninput = apply;
+    el.onkeydown = e => {
+      if (e.key === 'Escape') {
+        el.value = '';
+        apply();
+      }
+    };
+  });
   document.querySelectorAll('.t-qty-btn').forEach(btn => {
     btn.onclick = e => {
       e.stopPropagation();
@@ -658,6 +745,11 @@ function setQty(ean, un){
   if (!p){ updateAllTotales(); return; }
   const l = calcLine(p, un);
   document.querySelectorAll(`.qty-input[data-ean="${ean}"], .t-qty-input[data-ean="${ean}"]`).forEach(i => i.value = un || '');
+  updateAllTotales();
+  if (viewMode === 'tabla'){
+    render();
+    return;
+  }
   const card = document.querySelector(`.card[data-ean="${ean}"]`);
   if (card){
     card.classList.toggle('has-qty', un > 0);
@@ -669,38 +761,7 @@ function setQty(ean, un){
       tot.innerHTML = `<span>${cartLabel || '—'}</span><span>${un>0 ? fmtUSD.format(l.costo) : ''}</span>`;
     }
   }
-  const tr = document.querySelector(`tr[data-ean="${ean}"]`);
-  if (tr){
-    tr.classList.toggle('has-qty', un > 0);
-    tr.classList.toggle('open-box', un > 0 && !l.cerrado);
-    const setCell = (attr, val) => { const td = tr.querySelector(`td[${attr}="${ean}"]`); if (td) td.textContent = val; };
-    setCell('data-tot-cart', un>0 ? (l.cerrado ? fmt.format(l.cartones) : '⚠ ' + fmt.format(l.cartones)) : '—');
-    setCell('data-tot-peso', un>0 ? fmt.format(l.peso) : '—');
-    setCell('data-tot-vol', un>0 ? fmt.format(l.vol*1000) : '—');
-    setCell('data-tot-cost', un>0 ? fmtUSD.format(l.costo) : '—');
-  }
-  updateAllTotales();
   if (activeFilter === 'pedido' && un === 0) render();
-  else if (viewMode === 'tabla'){
-    const items = filteredData();
-    let fU=0, fP=0, fV=0, fC=0, fK=0;
-    for (const p2 of items){
-      const u2 = pedido[p2.e] || 0; if (!u2) continue;
-      const l2 = calcLine(p2, u2);
-      fK += l2.cartones; fU += u2; fP += l2.peso; fV += l2.vol; fC += l2.costo;
-    }
-    const tf = document.querySelector('table.inv tfoot tr');
-    if (tf){
-      const cells = tf.querySelectorAll('td');
-      if (cells.length >= 6){
-        cells[1].textContent = fmtInt.format(fU);
-        cells[2].textContent = fmt.format(fK);
-        cells[3].textContent = fmt.format(fP);
-        cells[4].textContent = fmt.format(fV*1000);
-        cells[5].textContent = fmtUSD.format(fC);
-      }
-    }
-  }
 }
 
 function updateAllTotales(){
