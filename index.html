@@ -45,11 +45,11 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .sbb-logo.auth-logo{width:150px;height:52px;box-shadow:0 6px 18px rgba(15,33,51,.14)}
 @media(max-width:700px){.header-inner{align-items:flex-start}.header h1{font-size:1.05rem;white-space:normal}.sbb-logo{width:104px;height:36px}}
 
-.totales{background:#142a40;border-top:1px solid rgba(255,255,255,.08);padding:6px 24px}
-.totales-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.tot-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 8px}
-.tot-card.container-card{display:grid;grid-template-columns:minmax(72px,.75fr) minmax(92px,126px);align-items:center;gap:8px;min-height:56px;background:linear-gradient(135deg,rgba(46,153,210,.18),rgba(255,255,255,.045));border-color:rgba(114,199,240,.28)}
-.container-visual{height:42px;position:relative;border-radius:8px;overflow:visible;filter:drop-shadow(0 12px 16px rgba(0,0,0,.24))}
+.totales{background:#142a40;border-top:1px solid rgba(255,255,255,.08);padding:10px 24px}
+.totales-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tot-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px}
+.tot-card.container-card{display:grid;grid-template-columns:1fr minmax(148px,190px);align-items:center;gap:16px;min-height:116px;background:linear-gradient(135deg,rgba(46,153,210,.18),rgba(255,255,255,.045));border-color:rgba(114,199,240,.28)}
+.container-visual{height:88px;position:relative;border-radius:8px;overflow:visible;filter:drop-shadow(0 12px 16px rgba(0,0,0,.24))}
 .container-visual::before{content:"";position:absolute;left:8%;right:8%;bottom:2px;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(46,153,210,.38),rgba(46,153,210,0) 70%);filter:blur(4px)}
 .container-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none}
 .container-20-visual .container-img{left:auto;right:0;width:50%}
@@ -61,11 +61,15 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .container-fill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 2px,transparent 2px 16px)}
 .container-fill.warn{filter:saturate(1.15) brightness(1.12)}
 .container-fill.over{filter:saturate(1.35) brightness(1.16)}
-.tot-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.35px;color:rgba(255,255,255,.5);font-weight:600;white-space:nowrap}
-.tot-value{font-size:1.05rem;font-weight:700;color:#fff;margin-top:1px;font-variant-numeric:tabular-nums}
-.container-card .tot-value{font-size:.9rem}
+.container-card .bar{background:rgba(255,255,255,.16)}
+.tot-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5);font-weight:600}
+.tot-value{font-size:1.15rem;font-weight:700;color:#fff;margin-top:2px;font-variant-numeric:tabular-nums}
 .tot-sub{font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px;font-variant-numeric:tabular-nums}
-@media(max-width:700px){.totales{padding:5px 12px}.totales-inner{grid-template-columns:repeat(2,1fr);gap:6px}.tot-card{padding:5px 7px}.tot-card.container-card{grid-template-columns:minmax(54px,.7fr) minmax(72px,1fr);gap:4px;min-height:auto}.container-visual{height:32px}.container-card .tot-value{font-size:.78rem}}
+.bar{height:5px;background:rgba(255,255,255,.1);border-radius:3px;margin-top:6px;overflow:hidden;position:relative}
+.bar-fill{height:100%;background:var(--azul-claro);transition:width .25s,background .25s;border-radius:3px}
+.bar-fill.warn{background:var(--ambar)}
+.bar-fill.over{background:var(--rojo)}
+@media(max-width:700px){.totales-inner{grid-template-columns:repeat(2,1fr)}.tot-card.container-card{grid-template-columns:1fr;gap:8px}.container-visual{height:58px}}
 
 .disclaimer{background:#fff8e1;border-bottom:1px solid #f0e0a0;padding:8px 24px;font-size:.78rem;color:#6d5a00;text-align:center}
 .disclaimer-inner{max-width:1400px;margin:0 auto}
@@ -76,65 +80,43 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .search-input{flex:1;min-width:200px;padding:8px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.1);color:#fff;font-size:.9rem;outline:none}
 .search-input::placeholder{color:rgba(255,255,255,.45)}
 .search-input:focus{border-color:var(--azul-claro);background:rgba(255,255,255,.15)}
-.filter-btn,.stock-btn{padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.8);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap}
-.filter-btn:hover,.stock-btn:hover{background:rgba(255,255,255,.12);color:#fff}
-.filter-btn.active,.stock-btn.active{background:var(--azul-claro);border-color:var(--azul-claro);color:#fff;font-weight:700}
+.filter-btn{padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.8);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+.filter-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.filter-btn.active{background:var(--azul-claro);border-color:var(--azul-claro);color:#fff;font-weight:700}
 .filter-btn.cat-lanz.active{background:var(--verde);border-color:var(--verde)}
 .filter-btn.cat-disc.active{background:var(--rojo);border-color:var(--rojo)}
 .filter-btn.cat-pedido.active{background:var(--laranja);border-color:var(--laranja)}
-.stock-box{display:flex;flex-direction:column;gap:6px;padding:6px 8px;border:1px solid rgba(255,255,255,.2);border-radius:8px;background:rgba(255,255,255,.05)}
-.stock-title{color:rgba(255,255,255,.65);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.35px}
-.stock-toggle{display:flex;gap:6px;flex-wrap:wrap}
+.filter-sep{width:1px;height:20px;background:rgba(255,255,255,.15)}
 
-.view-toggle,.cols-toggle{display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
-.view-toggle button,.cols-toggle button{padding:6px 12px;background:transparent;color:rgba(255,255,255,.75);border:none;font-size:.78rem;cursor:pointer;font-family:inherit}
-.view-toggle button.active,.cols-toggle button.active{background:var(--azul-claro);color:#fff;font-weight:700}
-.view-toggle button:hover:not(.active),.cols-toggle button:hover:not(.active){background:rgba(255,255,255,.1);color:#fff}
-.cols-control{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
-.cols-label{color:rgba(255,255,255,.65);font-size:.78rem}
+.view-toggle{display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
+.view-toggle button{padding:6px 12px;background:transparent;color:rgba(255,255,255,.75);border:none;font-size:.78rem;cursor:pointer;font-family:inherit}
+.view-toggle button.active{background:var(--azul-claro);color:#fff;font-weight:700}
+.view-toggle button:hover:not(.active){background:rgba(255,255,255,.1);color:#fff}
 
-.main{max-width:1400px;margin:0 auto;padding:20px 14px 60px}
+.main{max-width:1400px;margin:0 auto;padding:20px 24px 60px}
 .section-title{font-size:1.4rem;font-weight:700;color:var(--marinho);margin:24px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--azul-claro);display:flex;align-items:center;gap:10px}
 .section-title .badge{font-size:.72rem;background:var(--azul-bg);color:var(--azul);padding:3px 10px;border-radius:12px;font-weight:600}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:8px}
-.grid.cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
-.grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media(max-width:700px){.main{padding-left:8px;padding-right:8px}.grid{gap:8px}}
-.grid.cols-3{gap:8px}
-.grid.cols-3 .card-body{padding:7px 8px;gap:4px}
-.grid.cols-3 .card-isbn{font-size:.54rem;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.grid.cols-3 .card-desc{display:block;font-size:.58rem;line-height:1.16;min-height:0;-webkit-line-clamp:unset;overflow:visible}
-.grid.cols-3 .card-meta{gap:3px;font-size:.58rem;padding-top:4px}
-.grid.cols-3 .meta-label{font-size:.5rem;letter-spacing:.1px}
-.grid.cols-3 .cost-label{font-size:.54rem}
-.grid.cols-3 .cost-value{font-size:.78rem}
-.grid.cols-3 .qty-row{gap:2px;margin-top:4px;padding-top:4px;flex-wrap:nowrap}
-.grid.cols-3 .qty-label{font-size:.58rem;flex:0 0 auto}
-.grid.cols-3 .qty-btn{width:18px;height:20px;font-size:.72rem;padding:0}
-.grid.cols-3 .qty-input{width:30px;padding:2px 2px;font-size:.62rem}
-.grid.cols-3 .qty-totales{font-size:.56rem;flex-direction:column;gap:1px}
-@media(max-width:700px){.grid.cols-3 .card-status{font-size:.5rem;padding:2px 5px}.grid.cols-3 .card-img .placeholder{font-size:1.6rem}.cols-control{gap:6px}}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--borda);overflow:hidden;display:flex;flex-direction:column;position:relative;transition:transform .15s,box-shadow .15s,border-color .15s}
 .card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
 .card.has-qty{border-color:var(--laranja);box-shadow:0 0 0 2px rgba(232,93,4,.15)}
 .card.disc{border-color:#fca5a5;background:#fef2f2}
 .card.disc .card-desc{color:var(--rojo)}
-.card-img{width:100%;aspect-ratio:3/4;background:#f0ede8;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;position:relative;padding-top:24px}
+.card-img{width:100%;aspect-ratio:3/4;background:#f0ede8;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;position:relative}
 .card-img img{width:100%;height:100%;object-fit:contain}
 .card-img .placeholder{font-size:2.5rem;color:#bbb;display:none}
-.card-status{position:absolute;top:0;left:0;right:0;padding:3px 8px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#fff;text-align:center;z-index:2}
+.card-status{position:absolute;top:8px;left:8px;padding:2px 8px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border-radius:4px;color:#fff}
 .card-status.lanz{background:var(--verde)}
 .card-status.reg{background:#64748b}
 .card-status.disc{background:var(--rojo)}
 .card-body{padding:10px 12px;flex:1;display:flex;flex-direction:column;gap:6px}
 .card-isbn{font-size:.65rem;color:var(--texto-claro);font-variant-numeric:tabular-nums;font-family:'Courier New',monospace}
-.card-desc{font-size:.74rem;font-weight:600;color:var(--marinho);line-height:1.3;cursor:pointer;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:3em}
+.card-desc{font-size:.78rem;font-weight:600;color:var(--marinho);line-height:1.3;cursor:pointer;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:3em}
 .card-desc:hover{color:var(--azul)}
-.card-meta{display:grid;grid-template-columns:1fr;gap:4px;font-size:.7rem;margin-top:auto;padding-top:6px;border-top:1px dashed var(--borda)}
-.meta-row{display:flex;align-items:baseline;justify-content:space-between;gap:6px}
-.meta-label{color:var(--texto-claro);font-size:.6rem;text-transform:uppercase;white-space:nowrap}
+.card-meta{display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:.7rem;margin-top:auto;padding-top:6px;border-top:1px dashed var(--borda)}
+.meta-row{display:flex;flex-direction:column}
+.meta-label{color:var(--texto-claro);font-size:.6rem;text-transform:uppercase}
 .meta-value{font-weight:600;color:var(--texto);font-variant-numeric:tabular-nums}
 .meta-value.zero{color:var(--rojo)}
 .card-cost{display:flex;align-items:baseline;justify-content:space-between;margin-top:4px}
@@ -154,6 +136,20 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .qty-totales.active{color:var(--laranja);font-weight:600}
 .qty-totales.open-box{color:var(--ambar)}
 .qty-totales.open-box span:first-child{color:var(--ambar)}
+@media(min-width:701px){
+  .card-body{padding:12px 14px;gap:8px}
+  .card-isbn{font-size:.78rem}
+  .card-desc{font-size:.92rem;line-height:1.38;min-height:3.45em}
+  .card-meta{gap:5px;font-size:.78rem;padding-top:8px}
+  .meta-label{font-size:.68rem;letter-spacing:.15px}
+  .cost-label{font-size:.72rem}
+  .cost-value{font-size:1.08rem}
+  .qty-row{gap:8px;margin-top:8px;padding-top:8px}
+  .qty-label{font-size:.8rem}
+  .qty-btn{width:28px;height:28px;font-size:1rem}
+  .qty-input{width:60px;font-size:.98rem}
+  .qty-totales{font-size:.76rem}
+}
 
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000;padding:16px}
 .modal-overlay.show{display:flex}
@@ -176,10 +172,10 @@ body.locked > *:not(.auth-overlay){display:none !important}
 .tabla-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--borda);overflow:auto;margin-top:14px;box-shadow:var(--shadow)}
 table.inv{width:100%;border-collapse:collapse;font-size:.78rem;font-variant-numeric:tabular-nums}
 table.inv thead{background:var(--marinho);color:#fff;position:sticky;top:0;z-index:5}
-table.inv th{padding:8px 10px;text-align:center;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
-table.inv th.num{text-align:center}
-table.inv td{padding:6px 10px;border-bottom:1px solid var(--borda);vertical-align:middle;text-align:center}
-table.inv td.num{text-align:center;font-variant-numeric:tabular-nums}
+table.inv th{padding:8px 10px;text-align:left;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
+table.inv th.num{text-align:right}
+table.inv td{padding:6px 10px;border-bottom:1px solid var(--borda);vertical-align:middle}
+table.inv td.num{text-align:right;font-variant-numeric:tabular-nums}
 table.inv tbody tr:hover{background:#fafafa}
 table.inv tbody tr.has-qty{background:#fff5e6}
 table.inv tbody tr.has-qty:hover{background:#ffeacc}
@@ -194,7 +190,7 @@ table.inv tbody tr.disc.has-qty{background:#ffe4d6}
 .t-thumb .placeholder{font-size:1.2rem;color:#bbb;display:none}
 .t-thumb-cell:hover .t-thumb{box-shadow:0 0 0 2px var(--azul-claro)}
 .t-isbn{font-family:'Courier New',monospace;font-size:.72rem;color:var(--texto-claro);white-space:nowrap}
-.t-desc{font-weight:500;max-width:340px;line-height:1.35;cursor:pointer;text-align:center}
+.t-desc{font-weight:500;max-width:340px;line-height:1.35;cursor:pointer}
 .t-desc:hover{color:var(--azul)}
 .t-status{padding:2px 8px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;border-radius:4px;color:#fff;white-space:nowrap;display:inline-block}
 .t-status.lanz{background:var(--verde)}
@@ -236,19 +232,21 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
   <div class="header-inner">
     <div class="header-brand">
       <img class="sbb-logo" src="assets/sbb-logo.png" alt="Sociedade Bíblica do Brasil">
-      <h1>Inventario SBB</h1>
+      <h1>Inventario SBB <span>— Pedido de Exportación</span></h1>
     </div>
     <div style="font-size:.78rem;opacity:.75;text-align:right">
       <div>243 SKUs · <b style="color:var(--azul-claro)">69</b> lanz · 163 reg · <span style="color:#fca5a5">11 disc</span></div>
-      <div style="font-size:.7rem;opacity:.7">Generado: 18/05/2026 08:08</div>
+      <div style="font-size:.7rem;opacity:.7">Generado: 18/05/2026 08:14</div>
     </div>
   </div>
   <div class="totales">
     <div class="totales-inner">
       <div class="tot-card container-card">
         <div>
-          <div class="tot-label">20' contenedor</div>
+          <div class="tot-label">Contenedor 20' (28m³)</div>
           <div class="tot-value" id="tot-20-pct">0%</div>
+          <div class="tot-sub" id="tot-20-sub">0 m³ / 28 m³</div>
+          <div class="bar"><div class="bar-fill" id="bar-20" style="width:0%"></div></div>
         </div>
         <div class="container-visual container-20-visual" aria-hidden="true">
           <img class="container-img" src="assets/container-20.png" alt="">
@@ -257,8 +255,10 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
       </div>
       <div class="tot-card container-card">
         <div>
-          <div class="tot-label">40' contenedor</div>
+          <div class="tot-label">Contenedor 40' (67m³ / 27.000 kg)</div>
           <div class="tot-value" id="tot-40-pct">0%</div>
+          <div class="tot-sub" id="tot-40-sub">0 m³ · 0 kg</div>
+          <div class="bar"><div class="bar-fill" id="bar-40" style="width:0%"></div></div>
         </div>
         <div class="container-visual container-40-visual" aria-hidden="true">
           <img class="container-img" src="assets/container-40.png" alt="">
@@ -266,12 +266,14 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
         </div>
       </div>
       <div class="tot-card">
-        <div class="tot-label">Costo Total</div>
+        <div class="tot-label">Costo EXW Total</div>
         <div class="tot-value" id="tot-costo">$0.00</div>
+        <div class="tot-sub" id="tot-costo-sub">0 SKUs</div>
       </div>
       <div class="tot-card">
-        <div class="tot-label">Pedido Total</div>
+        <div class="tot-label">Cantidad Total</div>
         <div class="tot-value" id="tot-cantidad">0 un.</div>
+        <div class="tot-sub" id="tot-cajas-sub">0 cartones</div>
       </div>
     </div>
   </div>
@@ -279,8 +281,8 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 
 <div class="disclaimer">
   <div class="disclaimer-inner">
-    <span class="rojo">Biblias en rojo: precio especial/discontinuadas.</span>
-    <span>Actualizado: 15/05/2026</span>
+    <span class="rojo">Las Biblias en rojo están con un precio especial. Están discontinuadas y ya no serán más producidas.</span>
+    Pedido en <b>unidades</b>; los cartones se calculan automáticamente. Para cartón cerrado, las unidades deben ser múltiplo de la cantidad por cartón (los botones <b>−/+</b> avanzan en cartones). Costos EXW en USD.
   </div>
 </div>
 
@@ -291,26 +293,12 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     <button class="filter-btn cat-lanz" data-filter="lanz">Lanzamientos (69)</button>
     <button class="filter-btn" data-filter="reg">Regulares (163)</button>
     <button class="filter-btn cat-disc" data-filter="disc">Discontinuadas (11)</button>
+    <span class="filter-sep"></span>
     <button class="filter-btn cat-pedido" data-filter="pedido">En pedido (0)</button>
-    <div class="stock-box" title="Filtrar por estoque">
-      <span class="stock-title">Estoque</span>
-      <div class="stock-toggle">
-        <button class="stock-btn active" data-stock="all" type="button">Todos</button>
-        <button class="stock-btn" data-stock="available" type="button">Disponível</button>
-        <button class="stock-btn" data-stock="unavailable" type="button">Indisponível</button>
-      </div>
-    </div>
+    <span class="filter-sep"></span>
     <div class="view-toggle">
       <button data-view="cards" class="active" title="Vista de tarjetas">▦ Cards</button>
       <button data-view="tabla" title="Vista de tabla">☰ Tabla</button>
-    </div>
-    <div class="cols-control">
-      <span class="cols-label">Columnas</span>
-      <div class="cols-toggle" title="Elegir cuántas columnas ver">
-        <button data-cols="1" type="button">1</button>
-        <button data-cols="2" type="button">2</button>
-        <button data-cols="3" type="button">3</button>
-      </div>
     </div>
   </div>
 </div>
@@ -335,7 +323,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <button class="btt" id="btt" onclick="window.scrollTo({top:0})" title="Volver arriba">↑</button>
 
 <footer class="footer">
-  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 18/05/2026 08:08<br>
+  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 18/05/2026 08:14<br>
   <small>Tabla informativa. Precios EXW en USD, sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
@@ -426,11 +414,8 @@ const DATA = [{"e":"9798886391381","d":"DHH043:AZ: BIB ESP DIOS HABLATAPA DURA A
 let pedido = {};
 try { pedido = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ pedido = {}; }
 let activeFilter = 'all';
-let stockFilter = 'all';
 let searchTerm = '';
 let viewMode = localStorage.getItem('sbb_view') || 'cards';
-let cardCols = Number(localStorage.getItem('sbb_cols') || 3);
-if (![1,2,3].includes(cardCols)) cardCols = 3;
 let sortBy = null;
 
 function calcLine(p, un){
@@ -452,8 +437,6 @@ function filteredData(){
     if (activeFilter === 'reg' && p.s !== 'Regular') return false;
     if (activeFilter === 'disc' && p.s !== 'Discontinuada') return false;
     if (activeFilter === 'pedido' && !(pedido[p.e] > 0)) return false;
-    if (stockFilter === 'available' && p.i <= 0) return false;
-    if (stockFilter === 'unavailable' && p.i > 0) return false;
     if (term){
       const hay = (p.e + ' ' + p.d + ' ' + p.t).toLowerCase();
       if (!hay.includes(term)) return false;
@@ -482,7 +465,7 @@ function renderCards(){
   const html = [];
   for (const g of groupOrder){
     if (!groups[g]) continue;
-    html.push(`<h2 class="section-title">${groupLabel[g]} <span class="badge">${groups[g].length}</span></h2><div class="grid cols-${cardCols}">`);
+    html.push(`<h2 class="section-title">${groupLabel[g]} <span class="badge">${groups[g].length}</span></h2><div class="grid">`);
     for (const p of groups[g]) html.push(cardHtml(p));
     html.push('</div>');
   }
@@ -510,15 +493,17 @@ function cardHtml(p){
       <div class="card-isbn">${p.e}</div>
       <div class="card-desc" onclick="openModal('${p.e}')" title="${p.d.replace(/"/g,'&quot;')}">${p.d}</div>
       <div class="card-meta">
-        <div class="meta-row"><span class="meta-label">Cant/Cartón:</span><span class="meta-value">${p.q}</span></div>
-        <div class="meta-row"><span class="meta-label">Disponibles:</span><span class="meta-value${invCls}">${fmtInt.format(p.i)}</span></div>
+        <div class="meta-row"><span class="meta-label">Por cartón</span><span class="meta-value">${p.q} un.</span></div>
+        <div class="meta-row"><span class="meta-label">Inventario</span><span class="meta-value${invCls}">${fmtInt.format(p.i)}</span></div>
+        <div class="meta-row"><span class="meta-label">Peso/cart.</span><span class="meta-value">${fmt.format(p.p)} kg</span></div>
+        <div class="meta-row"><span class="meta-label">Vol/cart.</span><span class="meta-value">${fmt.format(p.v*1000)} L</span></div>
       </div>
       <div class="card-cost">
-        <span class="cost-label">Costo:</span>
+        <span class="cost-label">Costo EXW/copia</span>
         <span class="cost-value">${fmtUSD.format(p.c)}</span>
       </div>
       <div class="qty-row">
-        <span class="qty-label">Pedido:</span>
+        <span class="qty-label">Unidades:</span>
         <button class="qty-btn" data-act="dec" data-ean="${p.e}" type="button">−</button>
         <input class="qty-input" type="number" min="0" step="1" data-ean="${p.e}" value="${un}">
         <button class="qty-btn" data-act="inc" data-ean="${p.e}" type="button">+</button>
@@ -561,6 +546,8 @@ function renderTabla(){
       <td class="t-desc" onclick="openModal('${p.e}')" title="${p.d.replace(/"/g,'&quot;')}">${p.d}</td>
       <td><span class="t-status ${stCls}">${stLabel}</span></td>
       <td class="num">${p.q}</td>
+      <td class="num">${fmt.format(p.p)}</td>
+      <td class="num">${fmt.format(p.v*1000)}</td>
       <td class="num t-cost">${fmtUSD.format(p.c)}</td>
       <td class="num${invCls}">${fmtInt.format(p.i)}</td>
       <td class="num"><div class="t-qty-cell">
@@ -569,14 +556,16 @@ function renderTabla(){
         <button class="t-qty-btn" data-act="inc" data-ean="${p.e}" type="button">+</button>
       </div></td>
       <td class="num" data-tot-cart="${p.e}">${cartCell}</td>
+      <td class="num" data-tot-peso="${p.e}">${un>0 ? fmt.format(l.peso) : '—'}</td>
+      <td class="num" data-tot-vol="${p.e}">${un>0 ? fmt.format(l.vol*1000) : '—'}</td>
       <td class="num t-cost" data-tot-cost="${p.e}">${un>0 ? fmtUSD.format(l.costo) : '—'}</td>
     </tr>`;
   }).join('');
-  let fU=0, fC=0, fK=0;
+  let fU=0, fP=0, fV=0, fC=0, fK=0;
   for (const p of items){
     const un = pedido[p.e] || 0; if (!un) continue;
     const l = calcLine(p, un);
-    fK += l.cartones; fU += un; fC += l.costo;
+    fK += l.cartones; fU += un; fP += l.peso; fV += l.vol; fC += l.costo;
   }
   return `<div class="tabla-wrap"><table class="inv">
     <thead><tr>
@@ -584,18 +573,24 @@ function renderTabla(){
       <th data-sort="e" class="sortable">ISBN${arrow('e')}</th>
       <th data-sort="d" class="sortable">Descripción${arrow('d')}</th>
       <th data-sort="s" class="sortable">Status${arrow('s')}</th>
-      <th data-sort="q" class="sortable num">Cant./cartón${arrow('q')}</th>
-      <th data-sort="c" class="sortable num">Costo${arrow('c')}</th>
-      <th data-sort="i" class="sortable num">Disponibles${arrow('i')}</th>
+      <th data-sort="q" class="sortable num">Un./cart${arrow('q')}</th>
+      <th data-sort="p" class="sortable num">Peso/cart kg${arrow('p')}</th>
+      <th data-sort="v" class="sortable num">Vol/cart L${arrow('v')}</th>
+      <th data-sort="c" class="sortable num">Costo USD${arrow('c')}</th>
+      <th data-sort="i" class="sortable num">Inventario${arrow('i')}</th>
       <th data-sort="qty" class="sortable num">Unidades${arrow('qty')}</th>
       <th class="num">Cartones</th>
+      <th class="num">Peso kg</th>
+      <th class="num">Vol L</th>
       <th class="num">Costo Total</th>
     </tr></thead>
     <tbody>${rows}</tbody>
     <tfoot><tr>
-      <td colspan="7">TOTAL del filtro actual:</td>
+      <td colspan="9" style="text-align:right">TOTAL del filtro actual:</td>
       <td class="num">${fmtInt.format(fU)}</td>
       <td class="num">${fmt.format(fK)}</td>
+      <td class="num">${fmt.format(fP)}</td>
+      <td class="num">${fmt.format(fV*1000)}</td>
       <td class="num">${fmtUSD.format(fC)}</td>
     </tr></tfoot>
   </table></div>`;
@@ -680,25 +675,29 @@ function setQty(ean, un){
     tr.classList.toggle('open-box', un > 0 && !l.cerrado);
     const setCell = (attr, val) => { const td = tr.querySelector(`td[${attr}="${ean}"]`); if (td) td.textContent = val; };
     setCell('data-tot-cart', un>0 ? (l.cerrado ? fmt.format(l.cartones) : '⚠ ' + fmt.format(l.cartones)) : '—');
+    setCell('data-tot-peso', un>0 ? fmt.format(l.peso) : '—');
+    setCell('data-tot-vol', un>0 ? fmt.format(l.vol*1000) : '—');
     setCell('data-tot-cost', un>0 ? fmtUSD.format(l.costo) : '—');
   }
   updateAllTotales();
   if (activeFilter === 'pedido' && un === 0) render();
   else if (viewMode === 'tabla'){
     const items = filteredData();
-    let fU=0, fC=0, fK=0;
+    let fU=0, fP=0, fV=0, fC=0, fK=0;
     for (const p2 of items){
       const u2 = pedido[p2.e] || 0; if (!u2) continue;
       const l2 = calcLine(p2, u2);
-      fK += l2.cartones; fU += u2; fC += l2.costo;
+      fK += l2.cartones; fU += u2; fP += l2.peso; fV += l2.vol; fC += l2.costo;
     }
     const tf = document.querySelector('table.inv tfoot tr');
     if (tf){
       const cells = tf.querySelectorAll('td');
-      if (cells.length >= 4){
+      if (cells.length >= 6){
         cells[1].textContent = fmtInt.format(fU);
         cells[2].textContent = fmt.format(fK);
-        cells[3].textContent = fmtUSD.format(fC);
+        cells[3].textContent = fmt.format(fP);
+        cells[4].textContent = fmt.format(fV*1000);
+        cells[5].textContent = fmtUSD.format(fC);
       }
     }
   }
@@ -722,9 +721,15 @@ function updateAllTotales(){
   const pct40 = Math.max(pct40m3, pct40kg);
   const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
   set('tot-20-pct', fmt.format(Math.min(pct20, 999)) + '%');
+  set('tot-20-sub', `${fmt.format(totalVol)} m³ / ${CAP_20_M3} m³`);
   set('tot-40-pct', fmt.format(Math.min(pct40, 999)) + '%');
+  set('tot-40-sub', `${fmt.format(totalVol)} m³ · ${fmtInt.format(totalPeso)} kg`);
   set('tot-costo', fmtUSD.format(totalCosto));
   set('tot-cantidad', fmtInt.format(totalUn) + ' un.');
+  set('tot-cajas-sub', fmt.format(totalCajas) + ' cartones');
+  set('tot-costo-sub', fmtInt.format(Object.keys(pedido).filter(e => pedido[e]>0).length) + ' SKUs');
+  const bar20 = document.getElementById('bar-20');
+  const bar40 = document.getElementById('bar-40');
   const fill20 = document.getElementById('container-20-fill');
   const fill40 = document.getElementById('container-40-fill');
   const setFill = (el, pct, scale = 1) => {
@@ -732,6 +737,14 @@ function updateAllTotales(){
     el.style.width = Math.min(pct, 100) * scale + '%';
     el.className = 'container-fill' + (pct >= 100 ? ' over' : pct >= 90 ? ' warn' : '');
   };
+  if (bar20){
+    bar20.style.width = Math.min(pct20, 100) + '%';
+    bar20.className = 'bar-fill' + (pct20 >= 100 ? ' over' : pct20 >= 90 ? ' warn' : '');
+  }
+  if (bar40){
+    bar40.style.width = Math.min(pct40, 100) + '%';
+    bar40.className = 'bar-fill' + (pct40 >= 100 ? ' over' : pct40 >= 90 ? ' warn' : '');
+  }
   setFill(fill20, pct20, 0.5);
   setFill(fill40, pct40, 0.9);
   const fab = document.getElementById('fab-export');
@@ -757,26 +770,28 @@ function openModal(ean){
     <div class="row"><span>ISBN</span><b>${p.e}</b></div>
     <div class="row"><span>Status</span><b>${p.s}</b></div>
     <div class="row"><span>Traducción</span><b>${p.t}</b></div>
-    <div class="row"><span>Cant. por cartón</span><b>${p.q} un.</b></div>
-    <div class="row"><span>Costo</span><b>${fmtUSD.format(p.c)}</b></div>
-    <div class="row"><span>Costo/cartón</span><b>${fmtUSD.format(p.c*p.q)}</b></div>
-    <div class="row"><span>Disponibles</span><b style="color:${p.i===0?'#dc2626':'inherit'}">${fmtInt.format(p.i)} un.</b></div>
+    <div class="row"><span>Cantidad por cartón</span><b>${p.q} un.</b></div>
+    <div class="row"><span>Peso por cartón</span><b>${fmt.format(p.p)} kg</b></div>
+    <div class="row"><span>Volumen por cartón</span><b>${fmt.format(p.v*1000)} L (${fmt.format(p.v)} m³)</b></div>
+    <div class="row"><span>Costo EXW/copia</span><b>${fmtUSD.format(p.c)}</b></div>
+    <div class="row"><span>Costo EXW/cartón</span><b>${fmtUSD.format(p.c*p.q)}</b></div>
+    <div class="row"><span>Inventario disponible</span><b style="color:${p.i===0?'#dc2626':'inherit'}">${fmtInt.format(p.i)} un.</b></div>
   `;
   document.getElementById('modal').classList.add('show');
 }
 function closeModal(){ document.getElementById('modal').classList.remove('show'); }
 
 function exportarPedido(){
-  const lines = [['ISBN','Descripción','Status','Unidades','Cartones','Cartón cerrado','Costo']];
-  let totCart=0, totUn=0, totCosto=0;
+  const lines = [['ISBN','Descripción','Status','Unidades','Cartones','Cartón cerrado','Peso (kg)','Volumen (m³)','Costo EXW (USD)']];
+  let totCart=0, totUn=0, totPeso=0, totVol=0, totCosto=0;
   for (const ean in pedido){
     const un = pedido[ean]; if (!un) continue;
     const p = DATA.find(x => x.e === ean); if (!p) continue;
     const l = calcLine(p, un);
-    lines.push([p.e, '"' + p.d.replace(/"/g,'""') + '"', p.s, un, l.cartones.toFixed(3), l.cerrado ? 'Sí' : 'NO', l.costo.toFixed(2)]);
-    totCart+=l.cartones; totUn+=un; totCosto+=l.costo;
+    lines.push([p.e, '"' + p.d.replace(/"/g,'""') + '"', p.s, un, l.cartones.toFixed(3), l.cerrado ? 'Sí' : 'NO', l.peso.toFixed(3), l.vol.toFixed(4), l.costo.toFixed(2)]);
+    totCart+=l.cartones; totUn+=un; totPeso+=l.peso; totVol+=l.vol; totCosto+=l.costo;
   }
-  lines.push(['','TOTAL','', totUn, totCart.toFixed(3), '', totCosto.toFixed(2)]);
+  lines.push(['','TOTAL','', totUn, totCart.toFixed(3), '', totPeso.toFixed(3), totVol.toFixed(4), totCosto.toFixed(2)]);
   const csv = '﻿' + lines.map(r => r.join(';')).join('\n');
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
   const url = URL.createObjectURL(blob);
@@ -801,16 +816,8 @@ function setView(mode){
   render();
 }
 
-function setColumns(cols){
-  cardCols = Number(cols);
-  localStorage.setItem('sbb_cols', String(cardCols));
-  document.querySelectorAll('.cols-toggle button').forEach(b => b.classList.toggle('active', Number(b.dataset.cols) === cardCols));
-  render();
-}
-
 function initApp(){
   document.querySelectorAll('.view-toggle button').forEach(b => b.classList.toggle('active', b.dataset.view === viewMode));
-  document.querySelectorAll('.cols-toggle button').forEach(b => b.classList.toggle('active', Number(b.dataset.cols) === cardCols));
   render();
   document.getElementById('search').addEventListener('input', e => { searchTerm = e.target.value; render(); });
   document.querySelectorAll('.filter-btn').forEach(b => {
@@ -822,20 +829,8 @@ function initApp(){
       render();
     };
   });
-  document.querySelectorAll('.stock-btn').forEach(b => {
-    b.onclick = () => {
-      document.querySelectorAll('.stock-btn').forEach(x => x.classList.remove('active'));
-      b.classList.add('active');
-      stockFilter = b.dataset.stock;
-      sortBy = null;
-      render();
-    };
-  });
   document.querySelectorAll('.view-toggle button').forEach(b => {
     b.onclick = () => setView(b.dataset.view);
-  });
-  document.querySelectorAll('.cols-toggle button').forEach(b => {
-    b.onclick = () => setColumns(b.dataset.cols);
   });
   window.addEventListener('scroll', () => {
     const btt = document.getElementById('btt');
