@@ -240,6 +240,7 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
     </div>
     <div style="font-size:.78rem;opacity:.75;text-align:right">
       <div>243 SKUs · <b style="color:var(--azul-claro)">69</b> lanz · 163 reg · <span style="color:#fca5a5">11 disc</span></div>
+      <div style="font-size:.7rem;opacity:.7">Generado: 18/05/2026 08:08</div>
     </div>
   </div>
   <div class="totales">
@@ -334,8 +335,8 @@ table.inv tfoot td.num{font-variant-numeric:tabular-nums}
 <button class="btt" id="btt" onclick="window.scrollTo({top:0})" title="Volver arriba">↑</button>
 
 <footer class="footer">
-  Sociedad Bíblica del Brasil — Inventario para Exportación · Actualizado: 15/05/2026<br>
-  <small>Tabla informativa. Valores sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
+  Sociedad Bíblica del Brasil — Inventario para Exportación · Generado en 18/05/2026 08:08<br>
+  <small>Tabla informativa. Precios EXW en USD, sujetos a cambios. El pedido se queda guardado en este navegador (localStorage).</small>
 </footer>
 
 <script>
@@ -392,6 +393,7 @@ if (authGet() === '1'){
 
 // ===== APP =====
 const COVER_LOCAL_PREFIX = "capas/";
+const COVER_WEBP_PREFIX = "capas/otimizadas/webp/";
 const COVER_MB = "https://api.metabooks.com/api/v1/cover/";
 const COVER_TOKEN = "93f03634-f8eb-4747-b870-46f9d24a7e76";
 const STORAGE_KEY = "sbb_inventario_pedido";
@@ -399,13 +401,15 @@ const CAP_20_M3 = 28.0;
 const CAP_40_M3 = 67.0;
 const CAP_40_KG = 27000.0;
 
-function coverUrl(ean){ return COVER_LOCAL_PREFIX + ean + "_F.jpg"; }
+function coverUrl(ean){ return COVER_WEBP_PREFIX + ean + "_F_otimizada.webp"; }
+function coverUrlJPG(ean){ return COVER_LOCAL_PREFIX + ean + "_F.jpg"; }
 function coverUrlMB(ean){ return COVER_MB + ean + "/m?access_token=" + COVER_TOKEN; }
 function tryFallback(img){
   const ean = img.dataset.ean;
   const step = parseInt(img.dataset.step || '0') + 1;
   img.dataset.step = step;
-  if (step === 1){ img.src = coverUrlMB(ean); }
+  if (step === 1){ img.src = coverUrlJPG(ean); }
+  else if (step === 2){ img.src = coverUrlMB(ean); }
   else {
     img.style.display='none';
     const ph = img.parentElement.querySelector('.placeholder');
