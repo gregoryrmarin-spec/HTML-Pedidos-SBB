@@ -22,6 +22,7 @@ DEFAULT_DOWNLOADS = Path.home() / "Downloads"
 DATA_RE = re.compile(r"const DATA = (\[.*?\]);\s*\n\s*let pedido", re.S)
 STOCK_FILE_RE = re.compile(r"^Saída1 \(\d+\)\.xlsx$", re.I)
 LOG_FILE: Path | None = None
+CONTROL_CHARS_RE = re.compile(r"[\x00-\x08\x0B\x0C\x0E-\x1F]")
 
 
 def log(message: str) -> None:
@@ -137,7 +138,10 @@ def load_html_data(html_path: Path) -> tuple[str, list[dict]]:
     match = DATA_RE.search(html)
     if not match:
         raise ValueError(f"Nao encontrei 'const DATA = [...]' em {html_path}")
-    return html, json.loads(match.group(1))
+    data_raw = match.group(1)
+    # Remove caracteres de controle ilegais em JSON (mantendo \t, \n e \r).
+    data_sanitized = CONTROL_CHARS_RE.sub("", data_raw)
+    return html, json.loads(data_sanitized, strict=False)
 
 
 def update_html(html: str, products: list[dict], generated_at: str) -> str:
